@@ -1,0 +1,10 @@
+# pdflatex output files
+*.out
+*.log
+*.pdf
+*.aux
+*.snm
+*.toc
+*.nav
+
+main
