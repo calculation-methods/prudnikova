@@ -1,5 +1,4 @@
-#include "operations.h"
-#include "linear.h"
+#include "grids.h"
 
 // Функция 1
 bool lineLineIntersection(LinearFunction f1, LinearFunction f2, FunctionPoint& ans) {

@@ -2,11 +2,7 @@
 #include <vector>
 #include <cmath>
 
-#include "operations.h"
 #include "PLIC.h"
-#include "grids.h"
-#include "linear.h"
-#include "structures.h"
 
 
 double polygonArea(const Polygon& p) {

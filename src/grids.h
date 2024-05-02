@@ -1,4 +1,3 @@
-#include "structures.h"
 #include "linear.h"
 
 // Функция, вычисляющая координаты вершин i-ой ячейки сетки g
