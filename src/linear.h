@@ -1,3 +1,6 @@
+#ifndef LINEAR_H
+#define LINEAR_H
+
 #include <iostream>
 
 #include "structures.h"
@@ -26,3 +29,5 @@ double linearFindX(const LinearFunction& lf, double y) {
     // Вычисляем значение x по формуле линейной функции: n_x * x + n_y * y + rho = 0
     return - (lf.rho + n_y * y) / n_x;
 }
+
+#endif

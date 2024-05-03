@@ -1,3 +1,6 @@
+#ifndef STRUCTURES_H
+#define STRUCTURES_H
+
 #include <vector>
 #include <cmath>
 
@@ -81,3 +84,5 @@ struct Polygon
         return *this;
     }
 };
+
+#endif

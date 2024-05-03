@@ -1,3 +1,6 @@
+#ifndef OPERATIONS_H
+#define OPERATIONS_H
+
 #include "structures.h"
 
 // df/dx в точке
@@ -7,7 +10,7 @@ double df_dx(const NonlinearFunction& f, const Grid& g, int i) {
         // Для первой и последней точек используем односторонние разности
         return (f.points[i + 1].y - f.points[i].y) / g.delta_x;
     } else if (i == static_cast<int>(f.points.size()) - 1) {
-        (f.points[i].y - f.points[i - 1].y) / g.delta_x;
+        return (f.points[i].y - f.points[i - 1].y) / g.delta_x;
     } else {
         // Для остальных точек используем центральную разность
         // double left = (f.points[i].y - f.points[i - 1].y) / (g.delta_x);
@@ -88,3 +91,5 @@ NonlinearFunction divergence(const NonlinearFunction& f, const Grid& g) {
 double divergence(const NonlinearFunction& f, const Grid& g, int i) {
     return df_dx(f, g, i) + df_dy(f, g, i);
 }
+
+#endif

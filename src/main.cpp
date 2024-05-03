@@ -3,6 +3,10 @@
 #include <cmath>
 
 #include "PLIC.h"
+#include "structures.h"
+#include "grids.h"
+#include "linear.h"
+#include "operations.h"
 
 
 double polygonArea(const Polygon& p) {

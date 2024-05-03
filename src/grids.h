@@ -1,3 +1,6 @@
+#ifndef GRIDS_H
+#define GRIDS_H
+
 #include "linear.h"
 
 // Функция, вычисляющая координаты вершин i-ой ячейки сетки g
@@ -63,3 +66,5 @@ std::vector<FunctionPoint> gridCellLinearIntersection(const LinearFunction& lf, 
 
     return intersectionPoints;
 }
+
+#endif

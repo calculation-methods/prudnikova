@@ -1,3 +1,6 @@
+#ifndef PLIC_H
+#define PLIC_H
+
 #include "grids.h"
 
 // Функция 1
@@ -78,15 +81,17 @@ Polygon collectPolygonVertices(const LinearFunction& lf, const Grid& g) {
 }
 
 // Функция 4: Вычисление площади многоугольника
-double polygonArea(const Polygon& polygon) {
-    double area = 0.0;
-    int n = polygon.vertexNum;
+/* double polygonArea(const Polygon& polygon) { */
+/*     double area = 0.0; */
+/*     int n = polygon.vertexNum; */
 
-    for (int i = 0; i < n; ++i) {
-        int j = (i + 1) % n;
-        area += polygon.vertex[i].x * polygon.vertex[j].y;
-        area -= polygon.vertex[j].x * polygon.vertex[i].y;
-    }
+/*     for (int i = 0; i < n; ++i) { */
+/*         int j = (i + 1) % n; */
+/*         area += polygon.vertex[i].x * polygon.vertex[j].y; */
+/*         area -= polygon.vertex[j].x * polygon.vertex[i].y; */
+/*     } */
 
-    return std::abs(area) / 2.0;
-}
+/*     return std::abs(area) / 2.0; */
+/* } */
+
+#endif // PLIC_H
