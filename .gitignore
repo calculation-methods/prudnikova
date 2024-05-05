@@ -7,4 +7,5 @@
 *.toc
 *.nav
 
-main
+build/*
+
