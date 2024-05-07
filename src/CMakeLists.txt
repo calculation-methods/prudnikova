@@ -1,8 +1,6 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.20)
+project(src)
 
-project(prudnikova_diploma)
+set(CMAKE_CXX_STANDARD 14)
 
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED True)
-
-add_executable(program main.cpp)
+add_executable(src main.cpp grids.h linear.h operations.h PLIC.h structures.h)

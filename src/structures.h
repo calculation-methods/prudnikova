@@ -18,10 +18,10 @@ struct FunctionPoint {
     }
 };
 
-struct NonlinearFunction {
+struct TableFunction {
     std::vector<FunctionPoint> points;
 
-    NonlinearFunction& operator=(const NonlinearFunction& other) {
+    TableFunction& operator=(const TableFunction& other) {
         if (this != &other) {
             points = other.points;
         }
@@ -29,11 +29,11 @@ struct NonlinearFunction {
     }
 };
 
-struct LinearFunction {
-    std::vector<FunctionPoint> n;
+struct LineSegment {
+    FunctionPoint n;
     double rho;
 
-    LinearFunction& operator=(const LinearFunction& other) {
+    LineSegment& operator=(const LineSegment& other) {
         if (this != &other) {
             n = other.n;
             rho = other.rho;
@@ -61,8 +61,7 @@ struct Grid {
 };
 
 
-struct Polygon
-{
+struct Polygon {
     int vertexNum;
     std::vector<FunctionPoint> vertex;
 
