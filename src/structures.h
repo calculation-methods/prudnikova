@@ -9,37 +9,20 @@ struct FunctionPoint {
     double x;
     double y;
 
-    FunctionPoint& operator=(const FunctionPoint& other) {
-        if (this != &other) {
-            x = other.x;
-            y = other.y;
-        }
-        return *this;
-    }
+    FunctionPoint& operator=(const FunctionPoint& other);
 };
 
 struct TableFunction {
-    std::vector<FunctionPoint> points;
+    std::vector<std::vector<double>> points;
 
-    TableFunction& operator=(const TableFunction& other) {
-        if (this != &other) {
-            points = other.points;
-        }
-        return *this;
-    }
+    TableFunction& operator=(const TableFunction& other);
 };
 
 struct LineSegment {
     FunctionPoint n;
     double rho;
 
-    LineSegment& operator=(const LineSegment& other) {
-        if (this != &other) {
-            n = other.n;
-            rho = other.rho;
-        }
-        return *this;
-    }
+    LineSegment& operator=(const LineSegment& other);
 };
 
 struct Grid {
@@ -49,15 +32,9 @@ struct Grid {
     size_t x_size;
     size_t y_size;
 
-    Grid(double dx, double dy, size_t sizex, size_t sizey) : delta_x(dx), delta_y(dy), x_size(sizex), y_size(sizey) {}
+    Grid(double dx, double dy, size_t sizex, size_t sizey);
 
-    Grid& operator=(const Grid& other) {
-        if (this != &other) {
-            delta_x = other.delta_x;
-            delta_y = other.delta_y;
-        }
-        return *this;
-    }
+    Grid& operator=(const Grid& other);
 };
 
 
@@ -66,22 +43,16 @@ struct Polygon {
     std::vector<FunctionPoint> vertex;
 
     // Конструктор по умолчанию (без параметров)
-    Polygon() : vertexNum(0) {}
+    Polygon();
 
     // Конструктор с параметром для инициализации размера вектора
-    Polygon(int n) : vertexNum(n), vertex(n) {}
+    Polygon(int n);
 
     // Конструктор копирования
-    Polygon(const Polygon& other) : vertexNum(other.vertexNum), vertex(other.vertex) {}
+    Polygon(const Polygon& other);
 
     // Оператор присваивания
-    Polygon& operator=(const Polygon& other) {
-        if (this != &other) {
-            vertexNum = other.vertexNum;
-            vertex = other.vertex;
-        }
-        return *this;
-    }
+    Polygon& operator=(const Polygon& other);
 };
 
 #endif

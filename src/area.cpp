@@ -1,29 +1,7 @@
 #include "area.h"
 
-double polygonArea(const Polygon& p) {
-    double area = 0.0;
-
-    int n = p.vertexNum;
-
-    // Обработка случая, когда количество вершин меньше 3 (не многоугольник)
-    if (n < 3) {
-        return 0.0;
-    }
-
-    // Вычисление площади с помощью формулы Гаусса
-    for (int i = 0; i < n; i++) {
-        int j = (i + 1) % n;
-        area += p.vertex[i].x * p.vertex[j].y - p.vertex[j].x * p.vertex[i].y;
-    }
-
-    area = std::abs(area) / 2.0;
-
-    return area;
-}
-
-
 // Подсчёт занимаемой фазой площади 
-double phaseArea(const TableFunction& func, Grid g, int i) {
+double phaseArea(const TableFunction& func, Grid g, int i, int j) {
     double area = 0.0;
 
     FunctionPoint leftHalf, rightHalf;
@@ -33,21 +11,22 @@ double phaseArea(const TableFunction& func, Grid g, int i) {
     rightHalf.x = 0.0;
     rightHalf.y = 0.0;
 
+    // Находим среднее арифметическое для значений на границах ячейки
     if (i == 0 && (i + 1) < func.points.size()) {
-        leftHalf.x = func.points[i].x;
-        leftHalf.y = func.points[i].y;
-        rightHalf.x = (func.points[i].x + func.points[i + 1].x) / 2.0;
-        rightHalf. y= (func.points[i].y + func.points[i + 1].y) / 2.0;
+        leftHalf.x = i * g.delta_x;
+        leftHalf.y = func.points[i][j];
+        rightHalf.x = ((i + 1) * g.delta_x);
+        rightHalf.y = (func.points[i][j] + func.points[i + 1][j]) / 2.0;
     } else if (i > 0 && (i + 1) < func.points.size()) {
-        leftHalf.x = (func.points[i].x + func.points[i - 1].x) / 2.0;
-        leftHalf.y = (func.points[i].y + func.points[i - 1].y) / 2.0;
-        rightHalf.x = (func.points[i].x + func.points[i + 1].x) / 2.0;
-        rightHalf. y= (func.points[i].y + func.points[i + 1].y) / 2.0;
+        leftHalf.x = (i - 1) * g.delta_x;
+        leftHalf.y = (func.points[i][j] + func.points[i - 1][j]) / 2.0;
+        rightHalf.x = (i + 1) * g.delta_x;
+        rightHalf.y = (func.points[i][j] + func.points[i + 1][j]) / 2.0;
     } else if (i > 0 && i == func.points.size() - 1) {
-        leftHalf.x = (func.points[i].x + func.points[i - 1].x) / 2.0;
-        leftHalf.y = (func.points[i].y + func.points[i - 1].y) / 2.0;
-        rightHalf.x = func.points[i].x;
-        rightHalf. y= func.points[i].y;
+        leftHalf.x = (i - 1) * g.delta_x;
+        leftHalf.y = (func.points[i][j] + func.points[i - 1][j]) / 2.0;
+        rightHalf.x = (i + 1) * g.delta_x;
+        rightHalf.y = func.points[i][j];
     } else {
         throw std::invalid_argument("Ошибка в построении нелинейной функции: недостаточно точек");
     }
@@ -63,20 +42,20 @@ double phaseArea(const TableFunction& func, Grid g, int i) {
 
     p.vertexNum = 4;
 
-    area = polygonArea(p);
+    area = PLIC::polygonArea(p);
 
     return area;
 }
 
 // Функция, вычисляющая отношение изначальной площади первой фазы к площади ячейки сетки
-double calculatePhaseRatio(const TableFunction& func, Grid g, int i) {
+double calculatePhaseRatio(const TableFunction& func, Grid g, int i, int j) {
     double cellArea = g.delta_x * g.delta_y;
-    double phase_Area = phaseArea(func, g, i);
+    double phase_Area = phaseArea(func, g, i, j);
     
     return phase_Area / cellArea;
 }
 
-double approxArea(const Grid& g, double rho, const FunctionPoint& n, int i, double value) {
+double approxArea(const Grid& g, double rho, const FunctionPoint& n, int i, int j, double value) {
     // Создаем линейную функцию f(x) = n.x * x + rho
     LineSegment lf;
     lf.n = n;
@@ -92,6 +71,6 @@ double approxArea(const Grid& g, double rho, const FunctionPoint& n, int i, doub
     }
 
     // Вычисляем площадь многоугольника и сравниваем ее с заданным значением
-    double area = polygonArea(p);
+    double area = PLIC::polygonArea(p);
     return area - value;
 }
