@@ -1,7 +1,7 @@
 #include "PLIC.h"
 
 // Функция 1
-bool lineLineIntersection(LineSegment f1, LineSegment f2, FunctionPoint& ans) {
+bool PLIC::lineLineIntersection(LineSegment f1, LineSegment f2, FunctionPoint& ans) {
     double n1_x = f1.n.x;
     double n1_y = f1.n.y;
     double rho1 = f1.rho;
@@ -25,7 +25,7 @@ bool lineLineIntersection(LineSegment f1, LineSegment f2, FunctionPoint& ans) {
 }
 
 // Функция 2
-bool pointLocation(const FunctionPoint& point, const LineSegment& lf) {
+bool PLIC::pointLocation(const FunctionPoint& point, const LineSegment& lf) {
     double n_x = lf.n.x;
     double n_y = lf.n.y;
     double x_i = point.x;
@@ -37,7 +37,7 @@ bool pointLocation(const FunctionPoint& point, const LineSegment& lf) {
 }
 
 // Функция 3: Сбор вершин многоугольника
-Polygon collectPolygonVertices(const LineSegment& lf, const Grid& g) {
+Polygon PLIC::collectPolygonVertices(const LineSegment& lf, const Grid& g) {
     Polygon polygon;
     FunctionPoint currPoint;
     bool currState = false;
@@ -69,4 +69,19 @@ Polygon collectPolygonVertices(const LineSegment& lf, const Grid& g) {
     polygon.vertexNum = polygon.vertex.size();
 
     return polygon;
+}
+
+// Функция 4: расчёт площади многоугольника
+double PLIC::polygonArea(const Polygon& p) {
+    double area = 0.0;
+
+    // Вычисление площади с помощью формулы Гаусса
+    for (int i = 0; i < p.vertex.size(); i++) {
+        int j = (i + 1) % p.vertex.size();
+        area += p.vertex[i].x * p.vertex[j].y - p.vertex[j].x * p.vertex[i].y;
+    }
+
+    area = std::abs(area) / 2.0;
+
+    return area;
 }

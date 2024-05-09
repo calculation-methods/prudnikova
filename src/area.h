@@ -2,16 +2,14 @@
 #define AREA_H
 
 #include "grids.h"
-
-double polygonArea(const Polygon& p);
-
+#include "PLIC.h"
 
 // Подсчёт занимаемой фазой площади 
-double phaseArea(const TableFunction& func, Grid g, int i);
+double phaseArea(const TableFunction& func, Grid g, int i, int j);
 
 // Функция, вычисляющая отношение изначальной площади первой фазы к площади ячейки сетки
-double calculatePhaseRatio(const TableFunction& func, Grid g, int i);
+double calculatePhaseRatio(const TableFunction& func, Grid g, int i, int j);
 
-double approxArea(const Grid& g, double rho, const FunctionPoint& n, int i, double value);
+double approxArea(const Grid& g, double rho, const FunctionPoint& n, int i, int j, double value);
 
 #endif

@@ -1,11 +1,11 @@
 #include "approximation.h"
 
-double bisectionMethod(const Grid& g, double value, const FunctionPoint& n, int i) {
+double bisectionMethod(const Grid& g, double value, const FunctionPoint& n, int i, int j) {
     double a = -g.delta_x * std::max(std::abs(n.x), std::abs(n.y));
     double b = g.delta_x * std::max(std::abs(n.x), std::abs(n.y));
     double eps = 1e-6;
-    double fa = approxArea(g, a, n, i, value);
-    double fb = approxArea(g, b, n, i, value);
+    double fa = approxArea(g, a, n, i, j, value);
+    double fb = approxArea(g, b, n, i, j, value);
 
     if (fa == 0) {
         return a;
@@ -20,7 +20,7 @@ double bisectionMethod(const Grid& g, double value, const FunctionPoint& n, int 
 
     while (std::abs(b - a) > eps) {
         double c = (a + b) / 2;
-        double fc = approxArea(g, c, n, i, value);
+        double fc = approxArea(g, c, n, i, j, value);
         if (fc == 0) {
             return c;
         }
@@ -35,9 +35,8 @@ double bisectionMethod(const Grid& g, double value, const FunctionPoint& n, int 
     return (a + b) / 2;
 }
 
-
 // Построение линейной аппроксимации
-LineSegment buildLinearApproximation(const TableFunction& f, Grid g, int i) {
+LineSegment buildLinearApproximation(const TableFunction& f, Grid g, int i, int j) {
     FunctionPoint n;
     n.x = 0;
     n.y = 0;
@@ -62,11 +61,11 @@ LineSegment buildLinearApproximation(const TableFunction& f, Grid g, int i) {
     n.x /= std::sqrt(n.x * n.x + n.y * n.y);
     n.y /= std::sqrt(n.x * n.x + n.y * n.y);
 
-    double value = calculatePhaseRatio(f, g, i);
+    double value = calculatePhaseRatio(f, g, i, j);
 
     LineSegment lf;
 
-    double rho = bisectionMethod(g, value, n, i);
+    double rho = bisectionMethod(g, value, n, i, j);
 
     lf.rho = rho;
     lf.n = n;
