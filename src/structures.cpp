@@ -1,18 +1,17 @@
 #include "structures.h"
 
-struct FunctionPoint {
-    double x;
-    double y;
-
-    FunctionPoint& operator=(const FunctionPoint& other) {
-        if (this != &other) {
-            x = other.x;
-            y = other.y;
-        }
-        return *this;
+FunctionPoint& FunctionPoint::operator=(const FunctionPoint& other)
+{
+  if (this != &other)
+    {
+      x = other.x;
+      y = other.y;
     }
-};
 
+  return *this;
+}
+
+/*
 struct TableFunction {
     std::vector<std::vector<double>> points;
 
@@ -54,26 +53,26 @@ struct Grid {
         return *this;
     }
 };
+*/
 
-struct Polygon {
-    int vertexNum;
-    std::vector<FunctionPoint> vertex;
+Polygon::Polygon() : vertexNum(0) {}
 
-    // Конструктор по умолчанию (без параметров)
-    Polygon() : vertexNum(0) {}
+Polygon::Polygon(int n) : vertexNum(n), vertex(n) {}
 
-    // Конструктор с параметром для инициализации размера вектора
-    Polygon(int n) : vertexNum(n), vertex(n) {}
+Polygon::Polygon(const std::vector<FunctionPoint> &points)
+{
+  vertex = points;
+}
 
-    // Конструктор копирования
-    Polygon(const Polygon& other) : vertexNum(other.vertexNum), vertex(other.vertex) {}
+Polygon::Polygon(const Polygon& other) : vertexNum(other.vertexNum), vertex(other.vertex) {}
 
-    // Оператор присваивания
-    Polygon& operator=(const Polygon& other) {
-        if (this != &other) {
-            vertexNum = other.vertexNum;
-            vertex = other.vertex;
-        }
-        return *this;
+Polygon& Polygon::operator=(const Polygon& other)
+{
+  if (this != &other)
+    {
+      vertexNum = other.vertexNum;
+      vertex = other.vertex;
     }
-};
+
+  return *this;
+}
