@@ -4,7 +4,6 @@
 #include <vector>
 #include <cmath>
 
-
 struct FunctionPoint {
     double x;
     double y;
@@ -37,7 +36,6 @@ struct Grid {
     Grid& operator=(const Grid& other);
 };
 
-
 struct Polygon {
     int vertexNum;
     std::vector<FunctionPoint> vertex;
@@ -47,6 +45,8 @@ struct Polygon {
 
     // Конструктор с параметром для инициализации размера вектора
     Polygon(int n);
+
+    Polygon(const std::vector<FunctionPoint> &points);
 
     // Конструктор копирования
     Polygon(const Polygon& other);
