@@ -32,7 +32,7 @@ double phaseArea(const TableFunction& func, Grid g, int i, int j) {
     }
 
     Polygon cell, p;
-    cell = gridCellCoodrs(g, i);
+    cell = gridCellCoodrs(g, i, j);
 
     // !! здесь нужно посчитать площадь именно первой фазы, исходя из её положения. Пока что полагаю, что она находится снизу
     p.vertex.push_back(cell.vertex[1]);
@@ -62,7 +62,7 @@ double approxArea(const Grid& g, double rho, const FunctionPoint& n, int i, int 
     lf.rho = rho;
 
     // Находим точки пересечения прямой с ячейкой сетки
-    std::vector<FunctionPoint> intersections = gridCellLinearIntersection(lf, g, i);
+    std::vector<FunctionPoint> intersections = gridCellLinearIntersection(lf, g, i, j);
 
     // Создаем многоугольник из точек пересечения
     Polygon p(intersections.size());

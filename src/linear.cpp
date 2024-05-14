@@ -1,6 +1,6 @@
 #include "linear.h"
 
-double linearSolve(const LineSegment& lf, double x) {
+double linearSolve(const LineSegment& lf, const double x) {
     const double n_x = lf.n.x;
     const double n_y = lf.n.y;
 
@@ -8,8 +8,7 @@ double linearSolve(const LineSegment& lf, double x) {
     return - (lf.rho + n_x * x) / n_y;
 }
 
-
-double linearFindX(const LineSegment& lf, double y) {
+double linearFindX(const LineSegment& lf, const double y) {
     const double n_x = lf.n.x;
     const double n_y = lf.n.y;
 

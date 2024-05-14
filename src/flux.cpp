@@ -68,7 +68,7 @@ double calculateLeftFlux(const Polygon& p, const Conditions& cond, int i, int j)
 }
 
 // Функция для расчёта площади, прошедшей через нижнюю грань ячейки
-double calculateUpperFlux(const Polygon& p, const Conditions& cond, int i, int j) {
+double calculateLowerFlux(const Polygon& p, const Conditions& cond, int i, int j) {
     if (j == 0) {
         return 0;
     }

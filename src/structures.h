@@ -46,8 +46,6 @@ struct Polygon {
     // Конструктор с параметром для инициализации размера вектора
     Polygon(int n);
 
-    Polygon(const std::vector<FunctionPoint> &points);
-
     // Конструктор копирования
     Polygon(const Polygon& other);
 
