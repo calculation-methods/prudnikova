@@ -40,32 +40,26 @@ LineSegment buildLinearApproximation(const TableFunction& f, Grid g, int i, int 
     FunctionPoint n;
     n.x = 0;
     n.y = 0;
-
-    if (i == 0 && i < f.points.size()) {
-        for (size_t j = i; j < i + 2; j++) {
-            n.x += df_dx(f, g, i);
-            n.y += df_dy(f, g, i);
-        }
-    } else if (i == f.points.size()) {
-        for (size_t j = i - 1; j < i; j++) {
-            n.x += df_dx(f, g, i);
-            n.y += df_dy(f, g, i);
-        }
-    } else {
-        for (size_t j = i - 1; j < i + 2; j++) {
-            n.x += df_dx(f, g, i);
-            n.y += df_dy(f, g, i);
+    
+    for (size_t i0 = i - 1; i0 < i + 2; i0++) {
+        for (size_t j0 = j - 1; j0 < j + 2; j0++) {
+            n.x += df_dx(f, g, i0, j0);
+            n.y += df_dy(f, g, i0, j0);
         }
     }
 
-    n.x /= std::sqrt(n.x * n.x + n.y * n.y);
-    n.y /= std::sqrt(n.x * n.x + n.y * n.y);
+    if (n.x) {
+        n.x /= std::sqrt(n.x * n.x + n.y * n.y);
+    }
+    if (n.y) {
+        n.y /= std::sqrt(n.x * n.x + n.y * n.y);
+    }
 
-    double value = calculatePhaseRatio(f, g, i, j);
+    const double value = calculatePhaseRatio(f, g, i, j);
 
     LineSegment lf;
 
-    double rho = bisectionMethod(g, value, n, i, j);
+    const double rho = bisectionMethod(g, value, n, i, j);
 
     lf.rho = rho;
     lf.n = n;

@@ -51,8 +51,17 @@ struct Polygon {
     // Конструктор копирования
     Polygon(const Polygon& other);
 
+    // Конструктор, принимающий вектор точек FunctionPoint
+    Polygon(const std::vector<FunctionPoint>& points);
+
     // Оператор присваивания
     Polygon& operator=(const Polygon& other);
+};
+
+struct Conditions {
+    TableFunction velocity;
+    double delta_t; 
+    Grid grid;
 };
 
 #endif

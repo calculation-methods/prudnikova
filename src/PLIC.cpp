@@ -2,16 +2,16 @@
 
 // Функция 1
 bool PLIC::lineLineIntersection(LineSegment f1, LineSegment f2, FunctionPoint& ans) {
-    double n1_x = f1.n.x;
-    double n1_y = f1.n.y;
-    double rho1 = f1.rho;
+    const double n1_x = f1.n.x;
+    const double n1_y = f1.n.y;
+    const double rho1 = f1.rho;
 
-    double n2_x = f2.n.x;
-    double n2_y = f2.n.y;
-    double rho2 = f2.rho;
+    const double n2_x = f2.n.x;
+    const double n2_y = f2.n.y;
+    const double rho2 = f2.rho;
 
     // Вычисляем определитель
-    double det = n1_x * n2_y - n1_y * n2_x;
+    const double det = n1_x * n2_y - n1_y * n2_x;
 
     // Если определитель равен 0, линии параллельны или совпадают
     if (std::fabs(det) < 1e-10) {
@@ -26,12 +26,12 @@ bool PLIC::lineLineIntersection(LineSegment f1, LineSegment f2, FunctionPoint& a
 
 // Функция 2
 bool PLIC::pointLocation(const FunctionPoint& point, const LineSegment& lf) {
-    double n_x = lf.n.x;
-    double n_y = lf.n.y;
-    double x_i = point.x;
-    double y_i = linearSolve(lf, x_i);
-    double x_v = point.x;
-    double y_v = point.y;
+    const double n_x = lf.n.x;
+    const double n_y = lf.n.y;
+    const double x_i = point.x;
+    const double y_i = linearSolve(lf, x_i);
+    const double x_v = point.x;
+    const double y_v = point.y;
 
     return n_x * (x_v - x_i) + n_y * (y_v - y_i) > 0;
 }

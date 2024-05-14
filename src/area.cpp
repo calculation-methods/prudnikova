@@ -49,8 +49,8 @@ double phaseArea(const TableFunction& func, Grid g, int i, int j) {
 
 // Функция, вычисляющая отношение изначальной площади первой фазы к площади ячейки сетки
 double calculatePhaseRatio(const TableFunction& func, Grid g, int i, int j) {
-    double cellArea = g.delta_x * g.delta_y;
-    double phase_Area = phaseArea(func, g, i, j);
+    const double cellArea = g.delta_x * g.delta_y;
+    const double phase_Area = phaseArea(func, g, i, j);
     
     return phase_Area / cellArea;
 }
@@ -71,6 +71,6 @@ double approxArea(const Grid& g, double rho, const FunctionPoint& n, int i, int 
     }
 
     // Вычисляем площадь многоугольника и сравниваем ее с заданным значением
-    double area = PLIC::polygonArea(p);
+    const double area = PLIC::polygonArea(p);
     return area - value;
 }
