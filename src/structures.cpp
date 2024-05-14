@@ -1,17 +1,18 @@
 #include "structures.h"
 
-FunctionPoint& FunctionPoint::operator=(const FunctionPoint& other)
-{
-  if (this != &other)
-    {
-      x = other.x;
-      y = other.y;
+struct FunctionPoint {
+    double x;
+    double y;
+
+    FunctionPoint& operator=(const FunctionPoint& other) {
+        if (this != &other) {
+            x = other.x;
+            y = other.y;
+        }
+        return *this;
     }
+};
 
-  return *this;
-}
-
-/*
 struct TableFunction {
     std::vector<std::vector<double>> points;
 
@@ -53,26 +54,39 @@ struct Grid {
         return *this;
     }
 };
-*/
 
-Polygon::Polygon() : vertexNum(0) {}
+struct Polygon {
+    int vertexNum;
+    std::vector<FunctionPoint> vertex;
 
-Polygon::Polygon(int n) : vertexNum(n), vertex(n) {}
+    // Конструктор по умолчанию (без параметров)
+    Polygon() : vertexNum(0) {}
 
-Polygon::Polygon(const std::vector<FunctionPoint> &points)
-{
-  vertex = points;
-}
+    // Конструктор с параметром для инициализации размера вектора
+    Polygon(int n) : vertexNum(n), vertex(n) {}
 
-Polygon::Polygon(const Polygon& other) : vertexNum(other.vertexNum), vertex(other.vertex) {}
+    // Конструктор копирования
+    Polygon(const Polygon& other) : vertexNum(other.vertexNum), vertex(other.vertex) {}
 
-Polygon& Polygon::operator=(const Polygon& other)
-{
-  if (this != &other)
-    {
-      vertexNum = other.vertexNum;
-      vertex = other.vertex;
+    // Конструктор, принимающий вектор точек FunctionPoint
+    Polygon(const std::vector<FunctionPoint>& points) {
+        vertexNum = points.size();
+        vertex = points;
     }
 
-  return *this;
-}
+    // Оператор присваивания
+    Polygon& operator=(const Polygon& other) {
+        if (this != &other) {
+            vertexNum = other.vertexNum;
+            vertex = other.vertex;
+        }
+        return *this;
+    }
+};
+
+// Структура, которая содержит сетку, скорость на ней и отрезок времени
+struct Conditions {
+    TableFunction velocity;
+    double delta_t; 
+    Grid grid;
+};
