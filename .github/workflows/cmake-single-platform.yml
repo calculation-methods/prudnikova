@@ -8,10 +8,6 @@ on:
   pull_request:
     branches: [ "master" ]
 
-env:
-  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
-  BUILD_TYPE: Release
-
 jobs:
   build:
     # The CMake configure and build commands are platform agnostic and should work equally well on Windows or Mac.
@@ -22,18 +18,26 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
+    - name: Install boost
+      uses: MarkusJx/install-boost@v2.4.5
+      id: boost
+      with:
+        boost_version: 1.73.0
+
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
-      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      run: cmake src -B ${{github.workspace}}/build -DBoost_INCLUDE_DIR=${{steps.boost.outputs.BOOST_ROOT}}/include -DBoost_LIBRARY_DIRS=${{steps.boost.outputs.BOOST_ROOT}}/lib
+      env:
+        BOOST_ROOT: ${{steps.boost.outputs.BOOST_ROOT}}
 
     - name: Build
       # Build your program with the given configuration
-      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+      run: cmake --build ${{github.workspace}}/build
 
     - name: Test
       working-directory: ${{github.workspace}}/build
       # Execute tests defined by the CMake configuration.
       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
-      run: ctest -C ${{env.BUILD_TYPE}}
+      run: ctest
 
