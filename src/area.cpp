@@ -1,5 +1,6 @@
 #include "area.h"
 
+// Эта функция не требуется для случая с матрично заданной f
 // Подсчёт занимаемой фазой площади 
 double phaseArea(const TableFunction& func, Grid g, int i, int j) {
     double area = 0.0;
@@ -32,7 +33,7 @@ double phaseArea(const TableFunction& func, Grid g, int i, int j) {
     }
 
     Polygon cell, p;
-    cell = gridCellCoodrs(g, i);
+    cell = gridCellCoodrs(g, i, j);
 
     // !! здесь нужно посчитать площадь именно первой фазы, исходя из её положения. Пока что полагаю, что она находится снизу
     p.vertex.push_back(cell.vertex[1]);
@@ -62,15 +63,33 @@ double approxArea(const Grid& g, double rho, const FunctionPoint& n, int i, int 
     lf.rho = rho;
 
     // Находим точки пересечения прямой с ячейкой сетки
-    std::vector<FunctionPoint> intersections = gridCellLinearIntersection(lf, g, i);
+    // std::vector<FunctionPoint> intersections = gridCellLinearIntersection(lf, g, i, j);
 
     // Создаем многоугольник из точек пересечения
-    Polygon p(intersections.size());
-    for (int j = 0; j < intersections.size(); j++) {
-        p.vertex[j] = intersections[j];
-    }
+    // Polygon p(intersections.size());
+    // for (int j = 0; j < intersections.size(); j++) {
+    //     p.vertex[j] = intersections[j];
+    //     p.vertexNum += 1;
+    // }
+
+    // Polygon cell = gridCellCoodrs(g, i, j);
+
+    // // Руководствуюсь тем, что первая фаза снизу слева
+    // for (int k = 0; k < cell.vertex.size(); k++) {
+    //     bool inPoly = false;
+    //     for (int inter = 0; inter < p.vertex.size(); inter++) {
+    //         if (!inPoly && cell.vertex[k].y < p.vertex[inter].y || cell.vertex[k].x < p.vertex[inter].x) {
+    //             result.vertex.push_back(cell.vertex[k]);
+    //             result.vertexNum += 1;
+
+    //             inPoly = true;
+    //         }
+    //     }
+    // }
+
+    Polygon result = PLIC::collectPolygonVertices(lf, g, i, j);
 
     // Вычисляем площадь многоугольника и сравниваем ее с заданным значением
-    const double area = PLIC::polygonArea(p);
+    const double area = PLIC::polygonArea(result);
     return area - value;
 }

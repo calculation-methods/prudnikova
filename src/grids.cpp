@@ -1,7 +1,7 @@
 #include "grids.h"
 
-// Функция, вычисляющая координаты вершин i-ой ячейки сетки g
-Polygon gridCellCoodrs (Grid g, int i, int j) {
+// Функция, вычисляющая координаты вершин ij-ой ячейки сетки g
+Polygon gridCellCoodrs(Grid g, int i, int j) {
     FunctionPoint lu, ld, ru, rd;
 
     // Левый верхний угол

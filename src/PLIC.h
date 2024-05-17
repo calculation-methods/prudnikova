@@ -11,7 +11,7 @@ namespace PLIC {
     bool pointLocation(const FunctionPoint& point, const LineSegment& lf);
 
     // Функция 3: Сбор вершин многоугольника
-    Polygon collectPolygonVertices(const LineSegment& lf, const Grid& g);
+    Polygon collectPolygonVertices(const LineSegment& lf, const Grid& g, const int i, const int j);
 
     // Функция 4: расчёт площади многоугольника
     double polygonArea(const Polygon& p);

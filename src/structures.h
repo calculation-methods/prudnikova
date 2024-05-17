@@ -4,6 +4,7 @@
 #include <vector>
 #include <cmath>
 
+
 struct FunctionPoint {
     double x;
     double y;
@@ -13,6 +14,12 @@ struct FunctionPoint {
 
 struct TableFunction {
     std::vector<std::vector<double>> points;
+
+    // Конструктор по умолчанию (без параметров)
+    TableFunction();
+
+    // Конструктор с параметром для инициализации размера вектора
+    TableFunction(int n, int m);
 
     TableFunction& operator=(const TableFunction& other);
 };
@@ -31,10 +38,13 @@ struct Grid {
     size_t x_size;
     size_t y_size;
 
+    Grid();
+
     Grid(double dx, double dy, size_t sizex, size_t sizey);
 
     Grid& operator=(const Grid& other);
 };
+
 
 struct Polygon {
     int vertexNum;
@@ -46,8 +56,6 @@ struct Polygon {
     // Конструктор с параметром для инициализации размера вектора
     Polygon(int n);
 
-    Polygon(const std::vector<FunctionPoint> &points);
-
     // Конструктор копирования
     Polygon(const Polygon& other);
 
@@ -58,10 +66,16 @@ struct Polygon {
     Polygon& operator=(const Polygon& other);
 };
 
-struct Conditions {
+struct ComputationParams {
     TableFunction velocity;
     double delta_t; 
     Grid grid;
+
+    // Дефолтный конструктор
+    ComputationParams();
+
+    // Конструктор с параметрами
+    ComputationParams(TableFunction vel, double dt, Grid g);
 };
 
 #endif

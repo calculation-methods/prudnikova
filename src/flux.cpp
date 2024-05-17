@@ -1,7 +1,7 @@
 #include "flux.h"
 
 // Функция для расчёта площади, прошедшей через правую грань ячейки
-double calculateRightFlux(const Polygon& p, const Conditions& cond, int i, int j) {
+double calculateRightFlux(const Polygon& p, const ComputationParams& cond, int i, int j) {
     Polygon p1;
     p1.vertexNum = 0;
 
@@ -22,7 +22,7 @@ double calculateRightFlux(const Polygon& p, const Conditions& cond, int i, int j
 }
 
 // Функция для расчёта площади, прошедшей через верхнюю грань ячейки
-double calculateUpperFlux(const Polygon& p, const Conditions& cond, int i, int j) {
+double calculateUpperFlux(const Polygon& p, const ComputationParams& cond, int i, int j) {
     Polygon p1;
     p1.vertexNum = 0;
 
@@ -43,7 +43,7 @@ double calculateUpperFlux(const Polygon& p, const Conditions& cond, int i, int j
 }
 
 // Функция для расчёта площади, прошедшей через левую грань ячейки
-double calculateLeftFlux(const Polygon& p, const Conditions& cond, int i, int j) {
+double calculateLeftFlux(const Polygon& p, const ComputationParams& cond, int i, int j) {
     if (i == 0) {
         return 0;
     }
@@ -68,7 +68,7 @@ double calculateLeftFlux(const Polygon& p, const Conditions& cond, int i, int j)
 }
 
 // Функция для расчёта площади, прошедшей через нижнюю грань ячейки
-double calculateUpperFlux(const Polygon& p, const Conditions& cond, int i, int j) {
+double calculateLowerFlux(const Polygon& p, const ComputationParams& cond, int i, int j) {
     if (j == 0) {
         return 0;
     }
@@ -90,4 +90,24 @@ double calculateUpperFlux(const Polygon& p, const Conditions& cond, int i, int j
     }
 
     return PLIC::polygonArea(p1);
+}
+
+// Расчёт нового состояния ячейки с учётом четырёх потоков (вертикально)
+double fCellStepUpDown(const Polygon& p, const ComputationParams& cond, const TableFunction& f, int i, int j) {
+    double newArea = f.points[i][j] + calculateLowerFlux(p, cond, i, j) - calculateUpperFlux(p, cond, i, j);
+
+    if (newArea) {
+        return newArea;
+    }
+    return 0;
+}
+
+// Расчёт нового состояния ячейки с учётом четырёх потоков (горизонтально)
+double fCellStepLeftRight(const Polygon& p, const ComputationParams& cond, const TableFunction& f, int i, int j) {
+    double newArea = f.points[i][j] + calculateLeftFlux(p, cond, i, j) - calculateRightFlux(p, cond, i, j);
+
+    if (newArea) {
+        return newArea;
+    }
+    return 0;
 }

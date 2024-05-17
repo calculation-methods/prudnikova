@@ -37,39 +37,29 @@ bool PLIC::pointLocation(const FunctionPoint& point, const LineSegment& lf) {
 }
 
 // Функция 3: Сбор вершин многоугольника
-Polygon PLIC::collectPolygonVertices(const LineSegment& lf, const Grid& g) {
-    Polygon polygon;
-    FunctionPoint currPoint;
-    bool currState = false;
-    bool prevState = false;
+Polygon PLIC::collectPolygonVertices(const LineSegment& lf, const Grid& g, const int i, const int j) {
+    Polygon result;
 
-    // Проходим по всем ячейкам сетки
-    for (int i = 0; i <= g.x_size; ++i) {
-        for (int j = 0; j <=  g.y_size; ++j) {
-            currPoint.x = i * g.delta_x;
-            currPoint.y = j * g.delta_y;
+    std::vector<FunctionPoint> intersection = gridCellLinearIntersection(lf, g, i, j);
 
-            currState = pointLocation(currPoint, lf);
-
-            // Если текущее состояние отличается от предыдущего, добавляем вершину многоугольника
-            if (currState != prevState) {
-                FunctionPoint intersection;
-                if (lineLineIntersection(lf, LineSegment{{currPoint}, 0.0}, intersection)) {
-                    polygon.vertex.push_back(intersection);
-                }
-                if (lineLineIntersection(lf, LineSegment{{currPoint}, 0.0}, intersection)) {
-                    polygon.vertex.push_back(intersection);
-                }
-            }
-
-            prevState = currState;
-        }
+    for (int k = 0; k < intersection.size(); k++) {
+        result.vertex.push_back(intersection[k]);
+        result.vertexNum += 1;
     }
 
-    polygon.vertexNum = polygon.vertex.size();
+    Polygon cell = gridCellCoodrs(g, i, j);
 
-    return polygon;
+    // !! Так ли здесь применяется функция 2?
+    for (int k = 0; k < cell.vertex.size(); k++){
+        if (pointLocation(cell.vertex[k], lf)) {
+            result.vertex.push_back(cell.vertex[k]);
+            result.vertexNum += 1;
+        }
+    }
+    
+    return result;
 }
+
 
 // Функция 4: расчёт площади многоугольника
 double PLIC::polygonArea(const Polygon& p) {

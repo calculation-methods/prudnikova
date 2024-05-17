@@ -1,92 +1,78 @@
 #include "structures.h"
 
-struct FunctionPoint {
-    double x;
-    double y;
-
-    FunctionPoint& operator=(const FunctionPoint& other) {
-        if (this != &other) {
-            x = other.x;
-            y = other.y;
-        }
-        return *this;
+FunctionPoint& FunctionPoint::operator=(const FunctionPoint& other) {
+    if (this != &other) {
+        x = other.x;
+        y = other.y;
     }
-};
+    return *this;
+}
 
-struct TableFunction {
-    std::vector<std::vector<double>> points;
-
-    TableFunction& operator=(const TableFunction& other) {
-        if (this != &other) {
-            points = other.points;
-        }
-        return *this;
+TableFunction& TableFunction::operator=(const TableFunction& other) {
+    if (this != &other) {
+        points = other.points;
     }
-};
+    return *this;
+}
 
-struct LineSegment {
-    FunctionPoint n;
-    double rho;
+// Конструктор по умолчанию (без параметров)
+TableFunction::TableFunction() : points(0) {}
 
-    LineSegment& operator=(const LineSegment& other) {
-        if (this != &other) {
-            n = other.n;
-            rho = other.rho;
-        }
-        return *this;
+// Конструктор с параметром для инициализации размера вектора
+TableFunction::TableFunction(int n, int m) : points(n, std::vector<double>(m, 0.0)) {}
+
+LineSegment& LineSegment::operator=(const LineSegment& other) {
+    if (this != &other) {
+        n = other.n;
+        rho = other.rho;
     }
-};
+    return *this;
+}
 
-struct Grid {
-    double delta_x;
-    double delta_y;
+// Конструктор по умолчанию
+Grid::Grid() {}
 
-    size_t x_size;
-    size_t y_size;
+// Конструктор с параметрами
+Grid::Grid(double dx, double dy, size_t sizex, size_t sizey) : delta_x(dx), delta_y(dy), x_size(sizex), y_size(sizey) {}
 
-    Grid(double dx, double dy, size_t sizex, size_t sizey) : delta_x(dx), delta_y(dy), x_size(sizex), y_size(sizey) {}
-
-    Grid& operator=(const Grid& other) {
-        if (this != &other) {
-            delta_x = other.delta_x;
-            delta_y = other.delta_y;
-        }
-        return *this;
+Grid& Grid::operator=(const Grid& other) {
+    if (this != &other) {
+        delta_x = other.delta_x;
+        delta_y = other.delta_y;
     }
-};
+    return *this;
+}
 
-struct Polygon {
-    int vertexNum;
-    std::vector<FunctionPoint> vertex;
 
-    // Конструктор по умолчанию (без параметров)
-    Polygon() : vertexNum(0) {}
 
-    // Конструктор с параметром для инициализации размера вектора
-    Polygon(int n) : vertexNum(n), vertex(n) {}
+// Конструктор по умолчанию (без параметров)
+Polygon::Polygon() : vertexNum(0) {}
 
-    // Конструктор копирования
-    Polygon(const Polygon& other) : vertexNum(other.vertexNum), vertex(other.vertex) {}
+// Конструктор с параметром для инициализации размера вектора
+Polygon::Polygon(int n) : vertexNum(n), vertex(n) {}
 
-    // Конструктор, принимающий вектор точек FunctionPoint
-    Polygon(const std::vector<FunctionPoint>& points) {
-        vertexNum = points.size();
-        vertex = points;
+// Конструктор копирования
+Polygon::Polygon(const Polygon& other) : vertexNum(other.vertexNum), vertex(other.vertex) {}
+
+// Конструктор, принимающий вектор точек FunctionPoint
+Polygon::Polygon(const std::vector<FunctionPoint>& points) {
+    vertexNum = points.size();
+    vertex = points;
+}
+
+// Оператор присваивания
+Polygon& Polygon::operator=(const Polygon& other) {
+    if (this != &other) {
+        vertexNum = other.vertexNum;
+        vertex = other.vertex;
     }
+    return *this;
+}
 
-    // Оператор присваивания
-    Polygon& operator=(const Polygon& other) {
-        if (this != &other) {
-            vertexNum = other.vertexNum;
-            vertex = other.vertex;
-        }
-        return *this;
-    }
-};
+// Дефолтный конструктор
+ComputationParams::ComputationParams() : velocity(), delta_t(0.0), grid() {}
 
-// Структура, которая содержит сетку, скорость на ней и отрезок времени
-struct Conditions {
-    TableFunction velocity;
-    double delta_t; 
-    Grid grid;
-};
+// Конструктор с параметрами
+ComputationParams::ComputationParams(TableFunction vel, double dt, Grid g)
+        : velocity(vel), delta_t(dt), grid(g) {}
+

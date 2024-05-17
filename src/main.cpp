@@ -5,28 +5,27 @@
 
 #include "approximation.h"
 #include "area.h"
+#include "assemble.h"
 #include "flux.h"
 #include "grids.h"
 #include "linear.h"
 #include "operations.h"
 #include "PLIC.h"
+#include "printfile.h"
 #include "readfile.h"
 #include "structures.h"
 
 
 int main() {
-    std::vector<TableFunction> matrices = readMatrices("matrix.txt");
+    Parameters params = readParameters("input.txt");
 
-    for (const auto& function : matrices) {
-        std::cout << "Matrix" << "\n";
-        for (const auto& row : function.points) {
-            for (const auto& value : row) {
-                std::cout << value << " ";
-            }
-            std::cout << "\n";
-        }
-        std::cout << "\n";
-    }
+    Grid grid(params.delta_x, params.delta_y, params.f.points.size(), params.f.points[0].size());
 
+    ComputationParams vertical(params.v, params.delta_t, grid);
+    ComputationParams horizontal(params.u, params.delta_t, grid);
+
+    TableFunction result = applyMethod(params.f, vertical, horizontal, params.T);
+
+    printTableFunctionToFile(result);
     return 0;
 }

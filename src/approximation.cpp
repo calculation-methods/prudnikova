@@ -55,11 +55,9 @@ LineSegment buildLinearApproximation(const TableFunction& f, Grid g, int i, int 
         n.y /= std::sqrt(n.x * n.x + n.y * n.y);
     }
 
-    const double value = calculatePhaseRatio(f, g, i, j);
-
     LineSegment lf;
 
-    const double rho = bisectionMethod(g, value, n, i, j);
+    const double rho = bisectionMethod(g, f.points[i][j], n, i, j);
 
     lf.rho = rho;
     lf.n = n;
