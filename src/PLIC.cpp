@@ -33,7 +33,7 @@ bool PLIC::pointLocation(const FunctionPoint& point, const LineSegment& lf) {
     const double x_v = point.x;
     const double y_v = point.y;
 
-    return n_x * (x_v - x_i) + n_y * (y_v - y_i) > 0;
+    return (n_x * (x_v - x_i) + n_y * (y_v - y_i) > 0);
 }
 
 // Функция 3: Сбор вершин многоугольника

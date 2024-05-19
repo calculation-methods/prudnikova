@@ -7,6 +7,5 @@
 
 double linearSolve(const LineSegment& lf, double x);
 
-
 double linearFindX(const LineSegment& lf, double y);
 #endif
