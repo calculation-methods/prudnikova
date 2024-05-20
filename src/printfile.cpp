@@ -3,7 +3,7 @@
 void printTableFunctionToFile(const TableFunction& f) {
     std::ofstream outFile("out.txt");
     if (!outFile.is_open()) {
-        throw std::invalid_argument("Невозможно открыть файл out.txt для записи");
+        throw std::ios_base::failure("Невозможно открыть файл out.txt для записи");
         return;
     }
 

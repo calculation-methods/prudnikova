@@ -33,11 +33,14 @@ bool PLIC::pointLocation(const FunctionPoint& point, const LineSegment& lf) {
     const double x_v = point.x;
     const double y_v = point.y;
 
-    return (n_x * (x_v - x_i) + n_y * (y_v - y_i) > 0);
+    return (n_x * (x_v - x_i) + n_y * (y_v - y_i) >= 0);
 }
 
 // Функция 3: Сбор вершин многоугольника
 Polygon PLIC::collectPolygonVertices(const LineSegment& lf, const Grid& g, const int i, const int j) {
+    if (g.x_size || g.y_size == 0) {
+        return {};
+    }
     Polygon result;
 
     std::vector<FunctionPoint> intersection = gridCellLinearIntersection(lf, g, i, j);

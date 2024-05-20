@@ -17,7 +17,7 @@ TableFunction fFullStep(const ComputationParams& vertical, const ComputationPara
 
             Polygon p = PLIC::collectPolygonVertices(approx, vertical.grid, i, j);
             
-            new_f.points[i][j] += fCellStepUpDown(p, vertical, f, i, j) + fCellStepLeftRight(p, horizontal, f, i, j);
+            new_f.points[i][j] = fCellStepUpDown(p, vertical, f, i, j) + fCellStepLeftRight(p, horizontal, f, i, j);
         }
     }
 

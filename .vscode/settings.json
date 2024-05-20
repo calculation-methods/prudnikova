@@ -70,5 +70,6 @@
         "cinttypes": "cpp",
         "typeindex": "cpp",
         "variant": "cpp"
-    }
+    },
+    "cmake.sourceDirectory": "/home/nastyapond/dplm/prudnikova/src"
 }

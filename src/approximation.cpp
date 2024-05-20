@@ -3,7 +3,9 @@
 double bisectionMethod(const Grid& g, double value, const FunctionPoint& n, int i, int j) {
     double a = -g.delta_x * std::max(std::abs(n.x), std::abs(n.y));
     double b = g.delta_x * std::max(std::abs(n.x), std::abs(n.y));
+
     double eps = 1e-6;
+    
     double fa = approxArea(g, a, n, i, j, value);
     double fb = approxArea(g, b, n, i, j, value);
 

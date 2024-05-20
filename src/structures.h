@@ -3,7 +3,7 @@
 
 #include <vector>
 #include <cmath>
-
+#include <iostream>
 
 struct FunctionPoint {
     double x;
@@ -42,6 +42,8 @@ struct Grid {
 
     Grid(double dx, double dy, size_t sizex, size_t sizey);
 
+    Grid(size_t sizex, size_t sizey);
+
     Grid& operator=(const Grid& other);
 };
 
@@ -77,5 +79,21 @@ struct ComputationParams {
     // Конструктор с параметрами
     ComputationParams(TableFunction vel, double dt, Grid g);
 };
+
+bool operator==(const FunctionPoint& lhs, const FunctionPoint& rhs);
+
+bool operator==(const TableFunction& lhs, const TableFunction& rhs);
+
+bool operator==(const LineSegment& lhs, const LineSegment& rhs);
+
+bool operator==(const Grid& lhs, const Grid& rhs);
+
+bool operator==(const Polygon& lhs, const Polygon& rhs);
+
+bool operator==(const ComputationParams& lhs, const ComputationParams& rhs);
+
+std::ostream& operator<<(std::ostream& os, const FunctionPoint& fp);
+
+std::ostream& operator<<(std::ostream& os, const Polygon& poly);
 
 #endif

@@ -3,10 +3,10 @@
 
 #include "linear.h"
 
-// Функция, вычисляющая координаты вершин i-ой ячейки сетки g
+// Функция, вычисляющая координаты вершин ij-ой ячейки сетки g
 Polygon gridCellCoodrs (Grid g, int i, int j);
 
-// Функция, находящая точки пересечения прямой с i-ой ячейкой сетки
+// Функция, находящая точки пересечения прямой с ij-ой ячейкой сетки
 std::vector<FunctionPoint> gridCellLinearIntersection(const LineSegment& lf, const Grid& g, int i, int j);
 
 #endif

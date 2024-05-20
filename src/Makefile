@@ -152,6 +152,32 @@ polygon_area/fast:
 	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/polygon_area.dir/build.make tests/CMakeFiles/polygon_area.dir/build
 .PHONY : polygon_area/fast
 
+#=============================================================================
+# Target rules for targets named PLIC
+
+# Build rule for target.
+PLIC: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 PLIC
+.PHONY : PLIC
+
+# fast build rule for target.
+PLIC/fast:
+	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/PLIC.dir/build.make tests/CMakeFiles/PLIC.dir/build
+.PHONY : PLIC/fast
+
+#=============================================================================
+# Target rules for targets named linear_solver
+
+# Build rule for target.
+linear_solver: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 linear_solver
+.PHONY : linear_solver
+
+# fast build rule for target.
+linear_solver/fast:
+	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/linear_solver.dir/build.make tests/CMakeFiles/linear_solver.dir/build
+.PHONY : linear_solver/fast
+
 PLIC.o: PLIC.cpp.o
 .PHONY : PLIC.o
 
@@ -449,6 +475,8 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... test"
+	@echo "... PLIC"
+	@echo "... linear_solver"
 	@echo "... polygon_area"
 	@echo "... src"
 	@echo "... PLIC.o"

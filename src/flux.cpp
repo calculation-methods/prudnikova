@@ -96,8 +96,10 @@ double calculateLowerFlux(const Polygon& p, const ComputationParams& cond, int i
 double fCellStepUpDown(const Polygon& p, const ComputationParams& cond, const TableFunction& f, int i, int j) {
     double newArea = f.points[i][j] + calculateLowerFlux(p, cond, i, j) - calculateUpperFlux(p, cond, i, j);
 
-    if (newArea) {
+    if (newArea <= 1) {
         return newArea;
+    } else if (newArea > 1) {
+        return 1.0;
     }
     return 0;
 }
@@ -108,6 +110,8 @@ double fCellStepLeftRight(const Polygon& p, const ComputationParams& cond, const
 
     if (newArea) {
         return newArea;
+    } else if (newArea > 1) {
+        return 1.0;
     }
     return 0;
 }
