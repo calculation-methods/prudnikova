@@ -17,13 +17,15 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+    # - name: boost
+    #   run: sudo apt-get update && sudo apt-get install libboost-all-dev
 
     - name: Install boost
       id: boost
       uses: egor-tensin/build-boost@v1
       with:
         version: 1.71.0
-        libraries: filesystem program_options system unit_test_framework
+        libraries: filesystem program_options system test
         platform: x64
 
     - name: Configure CMake
