@@ -13,11 +13,12 @@
 #include "PLIC.h"
 #include "printfile.h"
 #include "readfile.h"
+#include "rungekutta.h"
 #include "structures.h"
 
 
 int main() {
-    Parameters params = readParameters("input.txt");
+    Parameters params = readParameters("/home/nastyapond/dplm/prudnikova/src/input.txt");
 
     Grid grid(params.delta_x, params.delta_y, params.f.points.size(), params.f.points[0].size());
 

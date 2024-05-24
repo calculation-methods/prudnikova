@@ -44,6 +44,9 @@ double df_dy(const TableFunction& f, const Grid& g, int i, int j) {
 TableFunction df_dx_(const TableFunction& f, const Grid& g) {
     TableFunction result;
     result.points.resize(f.points.size());
+    for (int k = 0; k < result.points.size(); k++) {
+        result.points[k].resize(f.points[k].size());
+    }
 
     for (size_t i = 0; i < f.points.size(); i++) {
         for (size_t j = 0; j < f.points[i].size(); j++) {
@@ -59,6 +62,9 @@ TableFunction df_dx_(const TableFunction& f, const Grid& g) {
 TableFunction df_dy_(const TableFunction& f, const Grid& g) {
     TableFunction result;
     result.points.resize(f.points.size());
+    for (int k = 0; k < result.points.size(); k++) {
+        result.points[k].resize(f.points[k].size());
+    }
 
     for (size_t i = 0; i < f.points.size(); i++) {
         for (size_t j = 0; j < f.points[i].size(); j++) {

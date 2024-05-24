@@ -1,7 +1,7 @@
 #include "grids.h"
 
 // Функция, вычисляющая координаты вершин ij-ой ячейки сетки g
-Polygon gridCellCoodrs(Grid g, int i, int j) {
+Polygon gridCellCoodrs(const Grid& g, const int i, const int j) {
     FunctionPoint lu, ld, ru, rd;
 
     // Левый нижний угол
@@ -26,70 +26,31 @@ Polygon gridCellCoodrs(Grid g, int i, int j) {
     return cell;
 }
 
-// Функция, находящая точки пересечения прямой с ij-ой ячейкой сетки
-std::vector<FunctionPoint> gridCellLinearIntersection(const LineSegment& lf, const Grid& g, int i, int j) {
-    std::vector<FunctionPoint> intersectionPoints;
-
-    if (lf.n.x == 0 && (linearSolve(lf, g.delta_x * i) == g.delta_y * j || linearSolve(lf, g.delta_x * i) == g.delta_y * (j + 1))) {
-        FunctionPoint left, right;
-
-        left.x = g.delta_x * i;
-        left.y = linearSolve(lf, g.delta_x * i);
-
-        right.x = g.delta_x * (i + 1);
-        right.y = linearSolve(lf, g.delta_x * (i + 1));
-
-        intersectionPoints.push_back(left);
-        intersectionPoints.push_back(right);
-
-        return intersectionPoints;
-    }
-
-    if (lf.n.y == 0 && (linearFindX(lf, g.delta_y * j) == g.delta_x * i || linearFindX(lf, g.delta_y * j) == g.delta_x * (i + 1))) {
-        FunctionPoint left, right;
-
-        left.y = g.delta_y * j;
-        left.x = linearFindX(lf, g.delta_y * j);
-
-        right.y = g.delta_y * (j + 1);
-        right.x = linearFindX(lf, g.delta_y * (j + 1));
-
-        intersectionPoints.push_back(left);
-        intersectionPoints.push_back(right);
-
-        return intersectionPoints;
-    }
-
-    // Получаем координаты вершин ячейки
+std::vector<LineSegment> buildLineSegmentFromCell(Grid g, const int i, const int j) {
     Polygon cell = gridCellCoodrs(g, i, j);
 
-    // Проверяем пересечение с каждой стороной ячейки
-    for (int curIndex = 0; curIndex < 4; curIndex++) {
-        int nextIndex = (curIndex + 1) % 4;
+    std::vector<LineSegment> edges;
 
-        // Находим уравнение прямой, проходящей через две вершины
-        const double dx = cell.vertex[nextIndex].x - cell.vertex[curIndex].x;
-        const double dy = cell.vertex[nextIndex].y - cell.vertex[curIndex].y;
+    for (int cur = 0; cur < cell.vertex.size(); cur++) {
+        int next = (cur + 1) % 4;
 
-        double x = 0.0, y = 0.0;
-        if (dx == 0) {
-            // Линия параллельна OY
-            x = cell.vertex[curIndex].x;
-            y = linearSolve(lf, x);
-        } else {
-            // Линия параллельна OX
-            y = cell.vertex[curIndex].y;
-            x = linearFindX(lf, y);
+        LineSegment line;
+
+        line.n.x = std::abs(cell.vertex[next].x - cell.vertex[cur].x);
+        line.n.y = std::abs(cell.vertex[next].y - cell.vertex[cur].y);
+
+        if (line.n.x) {
+            line.n.x /= std::sqrt(line.n.x * line.n.x + line.n.y * line.n.y);
         }
-
-        //Проверяем, принадлежит ли точка пересечения отрезку стороны ячейки
-        if (x >= std::min(cell.vertex[curIndex].x, cell.vertex[nextIndex].x) &&
-            x <= std::max(cell.vertex[curIndex].x, cell.vertex[nextIndex].x) &&
-            y >= std::min(cell.vertex[curIndex].y, cell.vertex[nextIndex].y) &&
-            y <= std::max(cell.vertex[curIndex].y, cell.vertex[nextIndex].y)) {
-            intersectionPoints.push_back({x, y});
+        if (line.n.y) {
+            line.n.y /= std::sqrt(line.n.x * line.n.x + line.n.y * line.n.y);
         }
+        // Вычисляем значение по формуле линейной функции: n_x * x + n_y * y - rho = 0
+        line.rho = line.n.x * cell.vertex[cur].x + line.n.y * cell.vertex[cur].y;
+
+        edges.push_back(line);
     }
 
-    return intersectionPoints;
+    return edges;
 }
+

@@ -92,7 +92,7 @@ double calculateLowerFlux(const Polygon& p, const ComputationParams& cond, int i
     return PLIC::polygonArea(p1);
 }
 
-// Расчёт нового состояния ячейки с учётом четырёх потоков (вертикально)
+// Расчёт нового состояния ячейки с учётом двух потоков (вертикально)
 double fCellStepUpDown(const Polygon& p, const ComputationParams& cond, const TableFunction& f, int i, int j) {
     double newArea = f.points[i][j] + calculateLowerFlux(p, cond, i, j) - calculateUpperFlux(p, cond, i, j);
 
@@ -104,7 +104,7 @@ double fCellStepUpDown(const Polygon& p, const ComputationParams& cond, const Ta
     return 0;
 }
 
-// Расчёт нового состояния ячейки с учётом четырёх потоков (горизонтально)
+// Расчёт нового состояния ячейки с учётом двух потоков (горизонтально)
 double fCellStepLeftRight(const Polygon& p, const ComputationParams& cond, const TableFunction& f, int i, int j) {
     double newArea = f.points[i][j] + calculateLeftFlux(p, cond, i, j) - calculateRightFlux(p, cond, i, j);
 

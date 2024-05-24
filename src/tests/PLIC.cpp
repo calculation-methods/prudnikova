@@ -29,9 +29,9 @@ BOOST_AUTO_TEST_CASE(PointLocationTest)
     FunctionPoint p6 = {0.0, 1.0};
     BOOST_TEST(PLIC::pointLocation(p1, l1));
     BOOST_TEST(!PLIC::pointLocation(p2, l1));
-    //BOOST_TEST(!PLIC::pointLocation(p3, l1)); // граничная точка
+    BOOST_TEST(PLIC::pointLocation(p3, l1)); // граничная точка
     BOOST_TEST(PLIC::pointLocation(p4, l1));
-    //BOOST_TEST(!PLIC::pointLocation(p5, l1)); // граничная точка
+    BOOST_TEST(PLIC::pointLocation(p5, l1)); // граничная точка
     BOOST_TEST(!PLIC::pointLocation(p6, l1));
 }
 

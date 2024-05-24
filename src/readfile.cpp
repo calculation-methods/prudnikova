@@ -1,5 +1,6 @@
 #include "readfile.h"
 
+
 Parameters readParameters(const std::string& filename) {
     std::ifstream file(filename);
     Parameters params;

@@ -4,6 +4,7 @@
 #include "grids.h"
 
 namespace PLIC {
+
     // Функция 1
     bool lineLineIntersection(LineSegment f1, LineSegment f2, FunctionPoint& ans);
 

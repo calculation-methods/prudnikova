@@ -3,7 +3,7 @@ project(diploma)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(src main.cpp approximation.cpp area.cpp assemble.cpp flux.cpp grids.cpp linear.cpp operations.cpp PLIC.cpp printfile.cpp readfile.cpp structures.cpp)
+add_executable(src main.cpp approximation.cpp area.cpp assemble.cpp flux.cpp grids.cpp linear.cpp operations.cpp PLIC.cpp printfile.cpp readfile.cpp rungekutta.cpp structures.cpp)
 
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/tests)
 

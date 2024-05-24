@@ -8,8 +8,8 @@
 *.nav
 *.orig
 
-.vscode
-build
+.vscode/*
+build/*
 CMakeFiles
 .gitignore
 cmake_install.cmake

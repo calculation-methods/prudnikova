@@ -28,11 +28,15 @@ TableFunction fFullStep(const ComputationParams& vertical, const ComputationPara
 TableFunction applyMethod(const TableFunction& f, const ComputationParams& vertical, const ComputationParams& horizontal, double time) {
     const int periods = time / vertical.delta_t;
 
-    TableFunction fk;
+    TableFunction fk, fn;
+
+    fn = f;
 
     for (int k = 0; k < periods; k++) {
-        fk = fFullStep(vertical, horizontal, f);
+        fk = fFullStep(vertical, horizontal, fn);
+        fn = rungeKutta(fk, horizontal.velocity, vertical.velocity, horizontal.delta_t, horizontal.grid);
     }
 
-    return fk;
+    return fn;
 }
+

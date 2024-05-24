@@ -2,6 +2,7 @@
 #define ASSEMBLE_H
 
 #include "flux.h"
+#include "rungekutta.h"
 
 // Расчёт новой функции f_(n+1)
 TableFunction fFullStep(const ComputationParams& vertical, const ComputationParams& horizontal, const TableFunction& f);

@@ -36,6 +36,8 @@ bool PLIC::pointLocation(const FunctionPoint& point, const LineSegment& lf) {
     return (n_x * (x_v - x_i) + n_y * (y_v - y_i) >= 0);
 }
 
+
+
 // Функция 3: Сбор вершин многоугольника
 Polygon PLIC::collectPolygonVertices(const LineSegment& lf, const Grid& g, const int i, const int j) {
     if (g.x_size || g.y_size == 0) {
@@ -43,19 +45,65 @@ Polygon PLIC::collectPolygonVertices(const LineSegment& lf, const Grid& g, const
     }
     Polygon result;
 
-    std::vector<FunctionPoint> intersection = gridCellLinearIntersection(lf, g, i, j);
+    std::vector<FunctionPoint> intersection;
+
+    if (lf.n.x == 0 && (linearSolve(lf, g.delta_x * i) == g.delta_y * j || linearSolve(lf, g.delta_x * i) == g.delta_y * (j + 1))) {
+        FunctionPoint left, right;
+
+        left.x = g.delta_x * i;
+        left.y = linearSolve(lf, g.delta_x * i);
+
+        right.x = g.delta_x * (i + 1);
+        right.y = linearSolve(lf, g.delta_x * (i + 1));
+
+        intersection.push_back(left);
+        intersection.push_back(right);
+
+        result.vertex = intersection;
+
+        return result;
+    }
+
+    if (lf.n.y == 0 && (linearFindX(lf, g.delta_y * j) == g.delta_x * i || linearFindX(lf, g.delta_y * j) == g.delta_x * (i + 1))) {
+        FunctionPoint left, right;
+
+        left.y = g.delta_y * j;
+        left.x = linearFindX(lf, g.delta_y * j);
+
+        right.y = g.delta_y * (j + 1);
+        right.x = linearFindX(lf, g.delta_y * (j + 1));
+
+        intersection.push_back(left);
+        intersection.push_back(right);
+
+        result.vertex = intersection;
+
+        return result;
+    }
+
+    std::vector<LineSegment> cell = buildLineSegmentFromCell(g, i, j);
+
+    for (int k = 0; k < cell.size(); k++) {
+        FunctionPoint cross;
+
+        if (PLIC::lineLineIntersection(lf, cell[k], cross)) {
+            intersection.push_back(cross);
+        }
+    }
+
+    result.vertex = intersection;
 
     for (int k = 0; k < intersection.size(); k++) {
         result.vertex.push_back(intersection[k]);
         result.vertexNum += 1;
     }
 
-    Polygon cell = gridCellCoodrs(g, i, j);
+    Polygon cellVertex = gridCellCoodrs(g, i, j);
 
     // !! Так ли здесь применяется функция 2?
-    for (int k = 0; k < cell.vertex.size(); k++){
-        if (pointLocation(cell.vertex[k], lf)) {
-            result.vertex.push_back(cell.vertex[k]);
+    for (int k = 0; k < cellVertex.vertex.size(); k++){
+        if (pointLocation(cellVertex.vertex[k], lf)) {
+            result.vertex.push_back(cellVertex.vertex[k]);
             result.vertexNum += 1;
         }
     }

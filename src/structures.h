@@ -47,7 +47,6 @@ struct Grid {
     Grid& operator=(const Grid& other);
 };
 
-
 struct Polygon {
     int vertexNum;
     std::vector<FunctionPoint> vertex;
