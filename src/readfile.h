@@ -10,12 +10,12 @@
 #include "structures.h"
 
 struct Parameters {
-    TableFunction f, u, v;
+    table_function f, u, v;
     double T, steps, delta_x, delta_y, delta_t;
 };
 
 Parameters readParameters(const std::string& filename);
 
-std::vector<TableFunction> readMatrices(std::istream& stream);
+std::vector<table_function> readMatrices(std::istream& stream);
 
 #endif

@@ -5,94 +5,94 @@
 #include <cmath>
 #include <iostream>
 
-struct FunctionPoint {
+struct point {
     double x;
     double y;
 
-    FunctionPoint& operator=(const FunctionPoint& other);
+    point& operator=(const point& other);
 };
 
-struct TableFunction {
+struct table_function {
     std::vector<std::vector<double>> points;
 
     // Конструктор по умолчанию (без параметров)
-    TableFunction();
+    table_function();
 
     // Конструктор с параметром для инициализации размера вектора
-    TableFunction(int n, int m);
+    table_function(int n, int m);
 
-    TableFunction& operator=(const TableFunction& other);
+    table_function& operator=(const table_function& other);
 };
 
-struct LineSegment {
-    FunctionPoint n;
+struct line_segment {
+    point n;
     double rho;
 
-    LineSegment& operator=(const LineSegment& other);
+    line_segment& operator=(const line_segment& other);
 };
 
-struct Grid {
+struct grid {
     double delta_x;
     double delta_y;
 
     size_t x_size;
     size_t y_size;
 
-    Grid();
+    grid();
 
-    Grid(double dx, double dy, size_t sizex, size_t sizey);
+    grid(double dx, double dy, size_t sizex, size_t sizey);
 
-    Grid(size_t sizex, size_t sizey);
+    grid(size_t sizex, size_t sizey);
 
-    Grid& operator=(const Grid& other);
+    grid& operator=(const grid& other);
 };
 
-struct Polygon {
-    int vertexNum;
-    std::vector<FunctionPoint> vertex;
+struct polygon {
+    int vertex_num;
+    std::vector<point> vertex;
 
     // Конструктор по умолчанию (без параметров)
-    Polygon();
+    polygon();
 
     // Конструктор с параметром для инициализации размера вектора
-    Polygon(int n);
+    polygon(int n);
 
     // Конструктор копирования
-    Polygon(const Polygon& other);
+    polygon(const polygon& other);
 
     // Конструктор, принимающий вектор точек FunctionPoint
-    Polygon(const std::vector<FunctionPoint>& points);
+    polygon(const std::vector<point>& points);
 
     // Оператор присваивания
-    Polygon& operator=(const Polygon& other);
+    polygon& operator=(const polygon& other);
 };
 
-struct ComputationParams {
-    TableFunction velocity;
+struct computation_params {
+    table_function velocity;
     double delta_t; 
-    Grid grid;
+    grid grid_f;
 
     // Дефолтный конструктор
-    ComputationParams();
+    computation_params();
 
     // Конструктор с параметрами
-    ComputationParams(TableFunction vel, double dt, Grid g);
+    computation_params(table_function vel, double dt, grid grid_f);
 };
 
-bool operator==(const FunctionPoint& lhs, const FunctionPoint& rhs);
+bool operator==(const point& lhs, const point& rhs);
 
-bool operator==(const TableFunction& lhs, const TableFunction& rhs);
+bool operator==(const table_function& lhs, const table_function& rhs);
 
-bool operator==(const LineSegment& lhs, const LineSegment& rhs);
+bool operator==(const line_segment& lhs, const line_segment& rhs);
 
-bool operator==(const Grid& lhs, const Grid& rhs);
+bool operator==(const grid& lhs, const grid& rhs);
 
-bool operator==(const Polygon& lhs, const Polygon& rhs);
+bool operator==(const polygon& lhs, const polygon& rhs);
 
-bool operator==(const ComputationParams& lhs, const ComputationParams& rhs);
+bool operator==(const computation_params& lhs, const computation_params& rhs);
 
-std::ostream& operator<<(std::ostream& os, const FunctionPoint& fp);
+std::ostream& operator<<(std::ostream& os, const point& fp);
 
-std::ostream& operator<<(std::ostream& os, const Polygon& poly);
+std::ostream& operator<<(std::ostream& os, const polygon& poly);
 
 #endif

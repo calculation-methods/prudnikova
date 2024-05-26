@@ -1,7 +1,8 @@
 #include "PLIC.h"
 
 // Функция 1
-bool PLIC::lineLineIntersection(LineSegment f1, LineSegment f2, FunctionPoint& ans) {
+bool PLIC::line_line_intersection(line_segment f1, line_segment f2, point& ans) 
+{
     const double n1_x = f1.n.x;
     const double n1_y = f1.n.y;
     const double rho1 = f1.rho;
@@ -25,86 +26,95 @@ bool PLIC::lineLineIntersection(LineSegment f1, LineSegment f2, FunctionPoint& a
 }
 
 // Функция 2
-bool PLIC::pointLocation(const FunctionPoint& point, const LineSegment& lf) {
+bool PLIC::is_point_in_phase1(const point& point, const line_segment& lf) 
+{
     const double n_x = lf.n.x;
     const double n_y = lf.n.y;
-    const double x_i = point.x;
-    const double y_i = linearSolve(lf, x_i);
     const double x_v = point.x;
     const double y_v = point.y;
 
-    return (n_x * (x_v - x_i) + n_y * (y_v - y_i) >= 0);
+    return (n_x * x_v + n_y * y_v - lf.rho >= 0);
 }
 
 
-
 // Функция 3: Сбор вершин многоугольника
-Polygon PLIC::collectPolygonVertices(const LineSegment& lf, const Grid& g, const int i, const int j) {
-    if (g.x_size || g.y_size == 0) {
+polygon PLIC::collect_polygon_vertices(const line_segment& lf, const grid& grid, const int i, const int j) 
+{
+    if (grid.x_size == 0 || grid.y_size == 0) 
+    {
         return {};
     }
-    Polygon result;
+    polygon result;
 
-    std::vector<FunctionPoint> intersection;
+    std::vector<point> intersection;
 
-    if (lf.n.x == 0 && (linearSolve(lf, g.delta_x * i) == g.delta_y * j || linearSolve(lf, g.delta_x * i) == g.delta_y * (j + 1))) {
-        FunctionPoint left, right;
+    bool is_line_cells_side_vertical = lf.n.x == 0 && (compute_y(lf, grid.delta_x * i) == grid.delta_y * j || compute_y(lf, grid.delta_x * i) == grid.delta_y * (j + 1));
+    bool is_line_cells_side_horizontal = lf.n.y == 0 && (compute_x(lf, grid.delta_y * j) == grid.delta_x * i || compute_x(lf, grid.delta_y * j) == grid.delta_x * (i + 1));
 
-        left.x = g.delta_x * i;
-        left.y = linearSolve(lf, g.delta_x * i);
+    if (is_line_cells_side_vertical) 
+    {
+        point left, right;
 
-        right.x = g.delta_x * (i + 1);
-        right.y = linearSolve(lf, g.delta_x * (i + 1));
+        left.x = grid.delta_x * i;
+        left.y = compute_y(lf, grid.delta_x * i);
 
-        intersection.push_back(left);
-        intersection.push_back(right);
-
-        result.vertex = intersection;
-
-        return result;
-    }
-
-    if (lf.n.y == 0 && (linearFindX(lf, g.delta_y * j) == g.delta_x * i || linearFindX(lf, g.delta_y * j) == g.delta_x * (i + 1))) {
-        FunctionPoint left, right;
-
-        left.y = g.delta_y * j;
-        left.x = linearFindX(lf, g.delta_y * j);
-
-        right.y = g.delta_y * (j + 1);
-        right.x = linearFindX(lf, g.delta_y * (j + 1));
+        right.x = grid.delta_x * (i + 1);
+        right.y = compute_y(lf, grid.delta_x * (i + 1));
 
         intersection.push_back(left);
         intersection.push_back(right);
 
         result.vertex = intersection;
+    } else if (is_line_cells_side_horizontal) 
+    {
+        point down, up;
 
-        return result;
-    }
+        down.y = grid.delta_y * j;
+        down.x = compute_x(lf, grid.delta_y * j);
 
-    std::vector<LineSegment> cell = buildLineSegmentFromCell(g, i, j);
+        up.y = grid.delta_y * (j + 1);
+        up.x = compute_x(lf, grid.delta_y * (j + 1));
 
-    for (int k = 0; k < cell.size(); k++) {
-        FunctionPoint cross;
+        intersection.push_back(down);
+        intersection.push_back(up);
 
-        if (PLIC::lineLineIntersection(lf, cell[k], cross)) {
-            intersection.push_back(cross);
+        result.vertex = intersection;
+    } else 
+    {
+        std::vector<line_segment> edges = buildLineSegmentFromCell(grid, i, j);
+
+        for (int k = 0; k < edges.size(); k++) {
+            point cross;
+
+            if (PLIC::line_line_intersection(lf, edges[k], cross)) 
+            {
+                bool out_of_cell_bounds = cross.x > (i + 1) * grid.delta_x || cross.x < i * grid.delta_x || 
+                cross.y > (j + 1) * grid.delta_y || cross.y < j * grid.delta_y;
+
+                if (!out_of_cell_bounds) 
+                {
+                    intersection.push_back(cross);
+                }
+            }
+        }
+
+        for (int k = 0; k < intersection.size(); k++) 
+        {
+            result.vertex.push_back(intersection[k]);
+            result.vertex_num += 1;
         }
     }
 
-    result.vertex = intersection;
-
-    for (int k = 0; k < intersection.size(); k++) {
-        result.vertex.push_back(intersection[k]);
-        result.vertexNum += 1;
-    }
-
-    Polygon cellVertex = gridCellCoodrs(g, i, j);
+    polygon cell = gridCellCoodrs(grid, i, j);
 
     // !! Так ли здесь применяется функция 2?
-    for (int k = 0; k < cellVertex.vertex.size(); k++){
-        if (pointLocation(cellVertex.vertex[k], lf)) {
-            result.vertex.push_back(cellVertex.vertex[k]);
-            result.vertexNum += 1;
+    for (int k = 0; k < cell.vertex.size(); k++)
+    {
+        std::vector<point>::iterator find_vertex = find(result.vertex.begin(), result.vertex.end(), cell.vertex[k]);
+        if (is_point_in_phase1(cell.vertex[k], lf) && find_vertex == result.vertex.end())
+        {
+            result.vertex.push_back(cell.vertex[k]);
+            result.vertex_num += 1;
         }
     }
     
@@ -113,11 +123,13 @@ Polygon PLIC::collectPolygonVertices(const LineSegment& lf, const Grid& g, const
 
 
 // Функция 4: расчёт площади многоугольника
-double PLIC::polygonArea(const Polygon& p) {
+double PLIC::polygon_area(const polygon& p) 
+{
     double area = 0.0;
 
     // Вычисление площади с помощью формулы Гаусса
-    for (int i = 0; i < p.vertex.size(); i++) {
+    for (int i = 0; i < p.vertex.size(); i++) 
+    {
         int j = (i + 1) % p.vertex.size();
         area += p.vertex[i].x * p.vertex[j].y - p.vertex[j].x * p.vertex[i].y;
     }

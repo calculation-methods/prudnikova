@@ -4,20 +4,20 @@
 #include "structures.h"
 
 // df/dx в точке
-double df_dx(const TableFunction& f, const Grid& g, int i, int j);
+double df_dx(const table_function& f, const grid& g, int i, int j);
 
 // df/dy в точке
-double df_dy(const TableFunction& f, const Grid& g, int i, int j);
+double df_dy(const table_function& f, const grid& g, int i, int j);
 
 // df/dx с результатами на плоскости
-TableFunction df_dx_(const TableFunction& f, const Grid& g);
+table_function df_dx_(const table_function& f, const grid& g);
 
 // df/dy с результатами на плоскости
-TableFunction df_dy_(const TableFunction& f, const Grid& g);
+table_function df_dy_(const table_function& f, const grid& g);
 
-std::vector<TableFunction> nabla(const TableFunction& f, const Grid& g);
+std::vector<table_function> nabla(const table_function& f, const grid& g);
 
 // Дивергенция в точке
-double divergence(const TableFunction& f, const Grid& g, int i, int j);
+double divergence(const table_function& f, const grid& g, int i, int j);
 
 #endif

@@ -1,14 +1,18 @@
 #include "printfile.h"
 
-void printTableFunctionToFile(const TableFunction& f) {
+void printTableFunctionToFile(const table_function& f) 
+{
     std::ofstream outFile("out.txt");
-    if (!outFile.is_open()) {
+    if (!outFile.is_open()) 
+    {
         throw std::ios_base::failure("Невозможно открыть файл out.txt для записи");
         return;
     }
 
-    for (const auto& row : f.points) {
-        for (double val : row) {
+    for (const auto& row : f.points) 
+    {
+        for (double val : row) 
+        {
             outFile << val << " ";
         }
         outFile << "\n";
@@ -17,29 +21,37 @@ void printTableFunctionToFile(const TableFunction& f) {
     outFile.close();
 }
 
-void writeParameters(const Parameters& params, const std::string& filename) {
+void writeParameters(const Parameters& params, const std::string& filename) 
+{
     std::ofstream file(filename);
 
-    if (file.is_open()) {
+    if (file.is_open()) 
+    {
         file << "u: \n";
-        for (const auto& row : params.u.points) {
-            for (const auto& value : row) {
+        for (const auto& row : params.u.points) 
+        {
+            for (const auto& value : row) 
+            {
                 file << value << " ";
             }
             file << "\n";
         }
 
         file << "\nv: \n";
-        for (const auto& row : params.v.points) {
-            for (const auto& value : row) {
+        for (const auto& row : params.v.points) 
+        {
+            for (const auto& value : row) 
+            {
                 file << value << " ";
             }
             file << "\n";
         }
 
         file << "\nf: \n";
-        for (const auto& row : params.f.points) {
-            for (const auto& value : row) {
+        for (const auto& row : params.f.points) 
+        {
+            for (const auto& value : row) 
+            {
                 file << value << " ";
             }
             file << "\n";
@@ -52,7 +64,8 @@ void writeParameters(const Parameters& params, const std::string& filename) {
         file << "delta_t: " << params.delta_t << "\n";
 
         file.close();
-    } else {
+    } else 
+    {
         throw std::ios_base::failure("Ошибка при выводе данных");
     }
 }

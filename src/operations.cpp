@@ -1,7 +1,8 @@
 #include "operations.h"
 
 // df/dx в точке
-double df_dx(const TableFunction& f, const Grid& g, int i, int j) {
+double df_dx(const table_function& f, const grid& g, int i, int j) 
+{
     if (i < 0 || i >= f.points.size()) {
         return 0;
     }
@@ -21,7 +22,8 @@ double df_dx(const TableFunction& f, const Grid& g, int i, int j) {
 
 
 // df/dy в точке
-double df_dy(const TableFunction& f, const Grid& g, int i, int j) {
+double df_dy(const table_function& f, const grid& g, int i, int j) 
+{
     if (i < 0 || i >= f.points.size()) {
         return 0;
     }
@@ -41,8 +43,9 @@ double df_dy(const TableFunction& f, const Grid& g, int i, int j) {
 
 
 // df/dx с результатами на плоскости
-TableFunction df_dx_(const TableFunction& f, const Grid& g) {
-    TableFunction result;
+table_function df_dx_(const table_function& f, const grid& g) 
+{
+    table_function result;
     result.points.resize(f.points.size());
     for (int k = 0; k < result.points.size(); k++) {
         result.points[k].resize(f.points[k].size());
@@ -59,8 +62,9 @@ TableFunction df_dx_(const TableFunction& f, const Grid& g) {
 
 
 // df/dy с результатами на плоскости
-TableFunction df_dy_(const TableFunction& f, const Grid& g) {
-    TableFunction result;
+table_function df_dy_(const table_function& f, const grid& g) 
+{
+    table_function result;
     result.points.resize(f.points.size());
     for (int k = 0; k < result.points.size(); k++) {
         result.points[k].resize(f.points[k].size());
@@ -76,8 +80,9 @@ TableFunction df_dy_(const TableFunction& f, const Grid& g) {
 }
 
 
-std::vector<TableFunction> nabla(const TableFunction& f, const Grid& g) {
-    std::vector<TableFunction> result(2);
+std::vector<table_function> nabla(const table_function& f, const grid& g) 
+{
+    std::vector<table_function> result(2);
 
     result[0] = df_dx_(f, g);
     result[1] = df_dy_(f, g);
@@ -87,6 +92,7 @@ std::vector<TableFunction> nabla(const TableFunction& f, const Grid& g) {
 
 
 // Дивергенция в точке
-double divergence(const TableFunction& f, const Grid& g, int i, int j) {
+double divergence(const table_function& f, const grid& g, int i, int j) 
+{
     return df_dx(f, g, i, j) + df_dy(f, g, i, j);
 }

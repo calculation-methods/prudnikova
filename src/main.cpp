@@ -17,15 +17,16 @@
 #include "structures.h"
 
 
-int main() {
+int main() 
+{
     Parameters params = readParameters("/home/nastyapond/dplm/prudnikova/src/input.txt");
 
-    Grid grid(params.delta_x, params.delta_y, params.f.points.size(), params.f.points[0].size());
+    grid grid(params.delta_x, params.delta_y, params.f.points.size(), params.f.points[0].size());
 
-    ComputationParams vertical(params.v, params.delta_t, grid);
-    ComputationParams horizontal(params.u, params.delta_t, grid);
+    computation_params vertical(params.v, params.delta_t, grid);
+    computation_params horizontal(params.u, params.delta_t, grid);
 
-    TableFunction result = applyMethod(params.f, vertical, horizontal, params.T);
+    table_function result = apply_method(params.f, vertical, horizontal, params.T);
 
     printTableFunctionToFile(result);
     return 0;

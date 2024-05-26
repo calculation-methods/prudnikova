@@ -2,22 +2,25 @@
 
 
 // Функция для решения уравнения переноса методом Рунге-Kутты 2-го порядка
-TableFunction rungeKutta(const TableFunction& f, const TableFunction& u, const TableFunction& v, double dt, Grid g) {
+table_function runge_kutta(const table_function& f, const table_function& u, const table_function& v, double dt, grid g) 
+{
     size_t nx, ny;
     nx = g.x_size;
     ny = g.y_size;
 
-    TableFunction f_tmp(nx, ny);
-    TableFunction result(nx, ny);
+    table_function f_tmp(nx, ny);
+    table_function result(nx, ny);
 
-    std::vector<TableFunction> grad = nabla(f, g);
+    std::vector<table_function> grad = nabla(f, g);
 
-    TableFunction grad_x = grad[0];
-    TableFunction grad_y = grad[1];
+    table_function grad_x = grad[0];
+    table_function grad_y = grad[1];
 
     //  Метод Рунге-Kутты 2-го порядка
-    for (int i = 0; i < nx; i++) {
-        for (int j = 0; j < ny; j++) {
+    for (int i = 0; i < nx; i++) 
+    {
+        for (int j = 0; j < ny; j++) 
+        {
             double alpha_1 = f.points[i][j];
             double alpha_2;
 

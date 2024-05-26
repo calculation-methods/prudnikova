@@ -10,6 +10,6 @@
 
 
 // Функция для решения уравнения переноса методом Рунге-Kутты 2-го порядка
-TableFunction rungeKutta(const TableFunction& f, const TableFunction& u, const TableFunction& v, double dt, Grid g); 
+table_function runge_kutta(const table_function& f, const table_function& u, const table_function& v, double dt, grid g); 
 
 #endif

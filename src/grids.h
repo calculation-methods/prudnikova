@@ -4,8 +4,8 @@
 #include "linear.h"
 
 // Функция, вычисляющая координаты вершин ij-ой ячейки сетки g
-Polygon gridCellCoodrs (const Grid& g, const int i, const int j);
+polygon gridCellCoodrs (const grid& g, const int i, const int j);
 
-std::vector<LineSegment> buildLineSegmentFromCell(Grid g, const int i, const int j);
+std::vector<line_segment> buildLineSegmentFromCell(grid g, const int i, const int j);
 
 #endif

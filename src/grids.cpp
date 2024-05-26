@@ -1,8 +1,9 @@
 #include "grids.h"
 
 // Функция, вычисляющая координаты вершин ij-ой ячейки сетки g
-Polygon gridCellCoodrs(const Grid& g, const int i, const int j) {
-    FunctionPoint lu, ld, ru, rd;
+polygon gridCellCoodrs(const grid& g, const int i, const int j) 
+{
+    point lu, ld, ru, rd;
 
     // Левый нижний угол
     ld.x = g.delta_x * i;
@@ -17,7 +18,7 @@ Polygon gridCellCoodrs(const Grid& g, const int i, const int j) {
     lu.x = g.delta_x * i;
     lu.y = g.delta_y * j + 1;
 
-    Polygon cell(4);
+    polygon cell(4);
     cell.vertex[0] = lu;
     cell.vertex[1] = ld;
     cell.vertex[2] = rd;
@@ -26,23 +27,27 @@ Polygon gridCellCoodrs(const Grid& g, const int i, const int j) {
     return cell;
 }
 
-std::vector<LineSegment> buildLineSegmentFromCell(Grid g, const int i, const int j) {
-    Polygon cell = gridCellCoodrs(g, i, j);
+std::vector<line_segment> buildLineSegmentFromCell(grid g, const int i, const int j) 
+{
+    polygon cell = gridCellCoodrs(g, i, j);
 
-    std::vector<LineSegment> edges;
+    std::vector<line_segment> edges;
 
-    for (int cur = 0; cur < cell.vertex.size(); cur++) {
+    for (int cur = 0; cur < cell.vertex.size(); cur++) 
+    {
         int next = (cur + 1) % 4;
 
-        LineSegment line;
+        line_segment line;
 
         line.n.x = std::abs(cell.vertex[next].x - cell.vertex[cur].x);
         line.n.y = std::abs(cell.vertex[next].y - cell.vertex[cur].y);
 
-        if (line.n.x) {
+        if (line.n.x) 
+        {
             line.n.x /= std::sqrt(line.n.x * line.n.x + line.n.y * line.n.y);
         }
-        if (line.n.y) {
+        if (line.n.y) 
+        {
             line.n.y /= std::sqrt(line.n.x * line.n.x + line.n.y * line.n.y);
         }
         // Вычисляем значение по формуле линейной функции: n_x * x + n_y * y - rho = 0

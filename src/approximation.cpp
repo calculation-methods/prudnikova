@@ -1,13 +1,14 @@
 #include "approximation.h"
 
-double bisectionMethod(const Grid& g, double value, const FunctionPoint& n, const int i, const int j) {
-    double a = -g.delta_x * std::max(std::abs(n.x), std::abs(n.y));
-    double b = g.delta_x * std::max(std::abs(n.x), std::abs(n.y));
+double bisection_method(const grid& g, double value, const point& n, const int i, const int j) 
+{
+    double a = - 1;
+    double b = g.delta_x * g.x_size + 1;
 
     double eps = 1e-6;
 
-    double fa = approxArea(g, a, n, i, j, value);
-    double fb = approxArea(g, b, n, i, j, value);
+    double fa = approx_area(g, a, n, i, j, value);
+    double fb = approx_area(g, b, n, i, j, value);
 
     if (fa == 0) {
         return a;
@@ -17,12 +18,12 @@ double bisectionMethod(const Grid& g, double value, const FunctionPoint& n, cons
     }
     if (fa * fb > 0) {
         // Решение не существует на данном интервале
-        return NAN;
+        std::numeric_limits<double>::max();
     }
 
     while (std::abs(b - a) > eps) {
         double c = (a + b) / 2;
-        double fc = approxArea(g, c, n, i, j, value);
+        double fc = approx_area(g, c, n, i, j, value);
         if (fc == 0) {
             return c;
         }
@@ -38,8 +39,9 @@ double bisectionMethod(const Grid& g, double value, const FunctionPoint& n, cons
 }
 
 // Построение линейной аппроксимации
-LineSegment buildLinearApproximation(const TableFunction& f, Grid g, int i, int j) {
-    FunctionPoint n;
+line_segment build_linear_approximation(const table_function& f, grid g, int i, int j) 
+{
+    point n;
     n.x = 0;
     n.y = 0;
     
@@ -57,9 +59,9 @@ LineSegment buildLinearApproximation(const TableFunction& f, Grid g, int i, int 
         n.y /= std::sqrt(n.x * n.x + n.y * n.y);
     }
 
-    LineSegment lf;
+    line_segment lf;
 
-    const double rho = bisectionMethod(g, f.points[i][j], n, i, j);
+    const double rho = bisection_method(g, f.points[i][j], n, i, j);
 
     lf.rho = rho;
     lf.n = n;

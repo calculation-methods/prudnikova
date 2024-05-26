@@ -16,6 +16,7 @@ cmake_install.cmake
 CMakeCache.txt
 Makefile
 CTestTestfile.cmake 
+main
 
 build/*
-Testing
+Testing/*

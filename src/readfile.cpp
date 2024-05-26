@@ -1,16 +1,20 @@
 #include "readfile.h"
 
 
-Parameters readParameters(const std::string& filename) {
+Parameters readParameters(const std::string& filename) 
+{
     std::ifstream file(filename);
     Parameters params;
 
-    if (file.is_open()) {
+    if (file.is_open()) 
+    {
         std::string line;
-        TableFunction* currentTableFunction = nullptr;
+        table_function* currentTableFunction = nullptr;
 
-        while (std::getline(file, line)) {
-            switch (line[0]) {
+        while (std::getline(file, line)) 
+        {
+            switch (line[0]) 
+            {
                 case 'u':
                     currentTableFunction = &(params.u);
                     break;
@@ -27,11 +31,14 @@ Parameters readParameters(const std::string& filename) {
                     file >> params.steps;
                     break;
                 case 'd':
-                    if (line[6] == 'x') {
+                    if (line[6] == 'x') 
+                    {
                         file >> params.delta_x;
-                    } else if (line[6] == 'y') {
+                    } else if (line[6] == 'y') 
+                    {
                         file >> params.delta_y;
-                    } else {
+                    } else 
+                    {
                         file >> params.delta_t;
                     }
                     break;
@@ -40,11 +47,13 @@ Parameters readParameters(const std::string& filename) {
                     std::vector<double> row;
                     double value;
 
-                    while (iss >> value) {
+                    while (iss >> value) 
+                    {
                         row.push_back(value);
                     }
 
-                    if (!row.empty() && currentTableFunction) {
+                    if (!row.empty() && currentTableFunction) 
+                    {
                         currentTableFunction->points.push_back(row);
                     }
                     break;
@@ -53,7 +62,8 @@ Parameters readParameters(const std::string& filename) {
         }
 
         file.close();
-    } else {
+    } else 
+    {
         throw std::ios_base::failure("Ошибка чтения файла input.txt");
     }
 
@@ -61,25 +71,31 @@ Parameters readParameters(const std::string& filename) {
 }
 
 
-std::vector<TableFunction> readMatrices(std::istream& stream) {
-    std::vector<TableFunction> functions;
-    TableFunction newFunction;
+std::vector<table_function> readMatrices(std::istream& stream) 
+{
+    std::vector<table_function> functions;
+    table_function newFunction;
     std::string line;
 
-    while (std::getline(stream, line)) {
+    while (std::getline(stream, line)) 
+    {
         std::istringstream iss(line);
         std::vector<double> row;
         double value;
 
-        while (iss >> value) {
+        while (iss >> value) 
+        {
             row.push_back(value);
         }
 
-        if (!row.empty()) {
+        if (!row.empty()) 
+        {
             newFunction.points.push_back(row);
             row.clear();
-        } else {
-            if (!newFunction.points.empty()) {
+        } else 
+        {
+            if (!newFunction.points.empty()) 
+            {
                 functions.push_back(newFunction);
                 newFunction.points.clear();
             }

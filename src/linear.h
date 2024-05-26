@@ -5,7 +5,7 @@
 
 #include "structures.h"
 
-double linearSolve(const LineSegment& lf, double x);
+double compute_y(const line_segment& lf, double x);
 
-double linearFindX(const LineSegment& lf, double y);
+double compute_x(const line_segment& lf, double y);
 #endif

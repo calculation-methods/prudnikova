@@ -7,9 +7,9 @@
 
 BOOST_AUTO_TEST_CASE(linear_solver)
 {
-  const LineSegment l1 = {{2, 2}, 9.0};
-  const FunctionPoint p1 = {2.5, 2.0};
+  const line_segment l1 = {{2, 2}, 9.0};
+  const point p1 = {2.5, 2.0};
 
-  BOOST_TEST(linearSolve(l1, p1.x) == p1.y);
-  BOOST_TEST(linearFindX(l1, p1.y) == p1.x);
+  BOOST_TEST(compute_y(l1, p1.x) == p1.y);
+  BOOST_TEST(compute_x(l1, p1.y) == p1.x);
 }

@@ -9,7 +9,7 @@
 #include "structures.h"
 #include "readfile.h"
 
-void printTableFunctionToFile(const TableFunction& f);
+void printTableFunctionToFile(const table_function& f);
 
 void writeParameters(const Parameters& params, const std::string& filename);
 
