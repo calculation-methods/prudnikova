@@ -17,7 +17,7 @@ u
 1 1 1 1 1 1 1
 
 T
-10
+8
 steps
 8
 delta_x

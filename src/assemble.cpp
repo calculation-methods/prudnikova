@@ -17,7 +17,7 @@ table_function f_full_step(const computation_params& vertical, const computation
     {
         for (int j = 0; j < width; j++) 
         {
-            new_f.points[i][j] = f.points[i][j] - (flow_increment_left_right(horizontal, f, i, j, horizontal.grid_f) + flow_increment_down_up(vertical, f, i, j, vertical.grid_f)) / vertical.grid_f.delta_x * vertical.grid_f.delta_y;
+            new_f.points[i][j] = f.points[i][j] - (flow_increment_left_right(horizontal, f, i, j, horizontal.grid_f) + flow_increment_down_up(vertical, f, i, j, vertical.grid_f)) / (vertical.grid_f.delta_x * vertical.grid_f.delta_y);
         }
     }
 

@@ -61,7 +61,9 @@ line_segment build_linear_approximation(const table_function& f, grid g, int i, 
 
     line_segment lf;
 
-    const double rho = bisection_method(g, f.points[i][j], n, i, j);
+    double value = f.points[i][j] * g.delta_x * g.delta_y;
+
+    const double rho = bisection_method(g, value, n, i, j);
 
     lf.rho = rho;
     lf.n = n;
