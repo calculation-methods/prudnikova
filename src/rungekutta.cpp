@@ -2,35 +2,33 @@
 
 
 // Функция для решения уравнения переноса методом Рунге-Kутты 2-го порядка
-table_function runge_kutta(const table_function& f, const table_function& u, const table_function& v, double dt, grid g) 
-{
-    size_t nx, ny;
-    nx = g.x_size;
-    ny = g.y_size;
+table_function runge_kutta(const table_function& f, const table_function& u, const table_function& v, double dt, grid f_grid) {
+    // Создаем новую функцию таблицы для хранения следующего шага
+    table_function next_step(f.points.size(), f.points[0].size());
 
-    table_function f_tmp(nx, ny);
-    table_function result(nx, ny);
+    // Перебираем каждую ячейку сетки
+    for (size_t i = 0; i < f_grid.x_size; ++i) {
+        for (size_t j = 0; j < f_grid.y_size; ++j) {
+            // Проверяем, находится ли ячейка на границе сетки
+            bool is_edge_x = (i == 0 || i == f_grid.x_size - 1);
+            bool is_edge_y = (j == 0 || j == f_grid.y_size - 1);
 
-    std::vector<table_function> grad = nabla(f, g);
+            // Расчет адвекции с учетом граничных условий
+            double advection_x = 0.0;
+            double advection_y = 0.0;
 
-    table_function grad_x = grad[0];
-    table_function grad_y = grad[1];
+            if (!is_edge_x) {
+                advection_x = u.points[i][j] * dt / f_grid.delta_x * (f.points[i][j] - f.points[i-1][j]);
+            }
 
-    //  Метод Рунге-Kутты 2-го порядка
-    for (int i = 0; i < nx; i++) 
-    {
-        for (int j = 0; j < ny; j++) 
-        {
-            double alpha_1 = f.points[i][j];
-            double alpha_2;
+            if (!is_edge_y) {
+                advection_y = v.points[i][j] * dt / f_grid.delta_y * (f.points[i][j] - f.points[i][j-1]);
+            }
 
-            // Вычисление промежуточного значения функции заполнения
-            alpha_2 = alpha_1 - dt * (u.points[i][j] * grad_x.points[i][j] + v.points[i][j] * grad_y.points[i][j]);
-            f_tmp.points[i][j] = alpha_1 + 0.5 * dt * (u.points[i][j] * grad_x.points[i][j] + v.points[i][j] * grad_y.points[i][j]);
-
-            // Обновление значения функции заполнения
-            result.points[i][j] = alpha_1 + dt * (u.points[i][j] * grad_x.points[i][j] + v.points[i][j] * grad_y.points[i][j]);
+            // Обновляем значение функции распределения
+            next_step.points[i][j] = f.points[i][j] - advection_x - advection_y;
         }
     }
-    return result;
+
+    return next_step;
 }

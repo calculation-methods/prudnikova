@@ -81,7 +81,7 @@ polygon PLIC::collect_polygon_vertices(const line_segment& lf, const grid& grid,
         result.vertex = intersection;
     } else 
     {
-        std::vector<line_segment> edges = buildLineSegmentFromCell(grid, i, j);
+        std::vector<line_segment> edges = line_segment_from_cell(grid, i, j);
 
         for (int k = 0; k < edges.size(); k++) {
             point cross;
@@ -105,7 +105,7 @@ polygon PLIC::collect_polygon_vertices(const line_segment& lf, const grid& grid,
         }
     }
 
-    polygon cell = gridCellCoodrs(grid, i, j);
+    polygon cell = polygon_from_cell(grid, i, j);
 
     // !! Так ли здесь применяется функция 2?
     for (int k = 0; k < cell.vertex.size(); k++)
@@ -126,11 +126,12 @@ polygon PLIC::collect_polygon_vertices(const line_segment& lf, const grid& grid,
 double PLIC::polygon_area(const polygon& p) 
 {
     double area = 0.0;
+    const int size = p.vertex.size();
 
     // Вычисление площади с помощью формулы Гаусса
-    for (int i = 0; i < p.vertex.size(); i++) 
+    for (int i = 0; i < size; i++) 
     {
-        int j = (i + 1) % p.vertex.size();
+        int j = (i + 1) % size;
         area += p.vertex[i].x * p.vertex[j].y - p.vertex[j].x * p.vertex[i].y;
     }
 

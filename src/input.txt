@@ -17,12 +17,12 @@ u
 1 1 1 1 1 1 1
 
 T
-4
+10
 steps
 8
 delta_x
-0.9
+1
 delta_y
-0.2
+1
 delta_t
 2

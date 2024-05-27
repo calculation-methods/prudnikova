@@ -14,7 +14,7 @@ struct Parameters {
     double T, steps, delta_x, delta_y, delta_t;
 };
 
-Parameters readParameters(const std::string& filename);
+Parameters read_parameters(const std::string& filename);
 
 std::vector<table_function> readMatrices(std::istream& stream);
 

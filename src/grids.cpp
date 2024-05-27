@@ -1,7 +1,7 @@
 #include "grids.h"
 
 // Функция, вычисляющая координаты вершин ij-ой ячейки сетки g
-polygon gridCellCoodrs(const grid& g, const int i, const int j) 
+polygon polygon_from_cell(const grid& g, const int i, const int j) 
 {
     point lu, ld, ru, rd;
 
@@ -27,9 +27,9 @@ polygon gridCellCoodrs(const grid& g, const int i, const int j)
     return cell;
 }
 
-std::vector<line_segment> buildLineSegmentFromCell(grid g, const int i, const int j) 
+std::vector<line_segment> line_segment_from_cell(grid g, const int i, const int j) 
 {
-    polygon cell = gridCellCoodrs(g, i, j);
+    polygon cell = polygon_from_cell(g, i, j);
 
     std::vector<line_segment> edges;
 
@@ -59,3 +59,8 @@ std::vector<line_segment> buildLineSegmentFromCell(grid g, const int i, const in
     return edges;
 }
 
+bool is_point_in_cell(const point& vertex, const grid& g, const int i, const int j) 
+{
+    return (vertex.x >= g.delta_x * i && vertex.x <= g.delta_x * (i + 1) &&
+            vertex.y >= g.delta_y * j && vertex.y <= g.delta_y * (j + 1));
+}
