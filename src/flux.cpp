@@ -276,6 +276,12 @@ double flow_increment_left_right(const computation_params& cond, const table_fun
     line_segment approx_cur = build_linear_approximation(f, f_grid, i, j);
     polygon curr_cell_poly = PLIC::collect_polygon_vertices(approx_cur, f_grid, i, j);
 
+    if (std::abs(f.points[i][j] - 1) < 1e-6)
+    {
+        curr_cell_poly = polygon_from_cell(f_grid, i, j);
+    }
+    
+
     double newArea = 0;
 
     if (i == 0) 
@@ -286,6 +292,11 @@ double flow_increment_left_right(const computation_params& cond, const table_fun
 
     line_segment approx_prev = build_linear_approximation(f, f_grid, i - 1, j);
     polygon prev_cell_poly = PLIC::collect_polygon_vertices(approx_prev, f_grid, i - 1, j);
+
+    if (std::abs(f.points[i - 1][j] - 1) < 1e-6)
+    {
+        prev_cell_poly = polygon_from_cell(f_grid, i - 1, j);
+    }
     
     newArea = flux_left(prev_cell_poly, cond, i, j) - flux_right(curr_cell_poly, cond, i, j);
     if (newArea) {
