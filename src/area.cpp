@@ -6,7 +6,6 @@ double approx_area(const grid& g, double rho, const point& n, int i, int j, doub
 
     polygon result = PLIC::collect_polygon_vertices(lf, g, i, j);
 
-    // Вычисляем площадь многоугольника и сравниваем ее с заданным значением
     const double area = PLIC::polygon_area(result);
     return area - value;
 }

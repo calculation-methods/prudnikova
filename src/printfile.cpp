@@ -21,7 +21,7 @@ void printTableFunctionToFile(const table_function& f)
     outFile.close();
 }
 
-void writeParameters(const Parameters& params, const std::string& filename) 
+void writeParameters(const parameters& params, const std::string& filename) 
 {
     std::ofstream file(filename);
 

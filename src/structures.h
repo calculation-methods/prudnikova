@@ -10,25 +10,9 @@ struct point {
     double y;
 
     point& operator=(const point& other);
-};
-
-struct table_function {
-    std::vector<std::vector<double>> points;
-
-    // Конструктор по умолчанию (без параметров)
-    table_function();
-
-    // Конструктор с параметром для инициализации размера вектора
-    table_function(int n, int m);
-
-    table_function& operator=(const table_function& other);
-};
-
-struct line_segment {
-    point n;
-    double rho;
-
-    line_segment& operator=(const line_segment& other);
+    bool operator!=(const point& other) const;
+    bool operator!() const;
+    bool operator==(const point& other) const;
 };
 
 struct grid {
@@ -46,6 +30,27 @@ struct grid {
 
     grid& operator=(const grid& other);
 };
+
+struct table_function {
+    std::vector<std::vector<double>> points;
+    grid f_grid;
+
+    // Конструктор по умолчанию (без параметров)
+    table_function();
+
+    // Конструктор с параметром для инициализации размера вектора
+    table_function(int n, int m);
+
+    table_function& operator=(const table_function& other);
+};
+
+struct line_segment {
+    point n;
+    double rho;
+
+    line_segment& operator=(const line_segment& other);
+};
+
 
 struct polygon {
     int vertex_num;
@@ -79,7 +84,7 @@ struct computation_params {
     computation_params(table_function vel, double dt, grid grid_f);
 };
 
-bool operator==(const point& lhs, const point& rhs);
+
 
 bool operator==(const table_function& lhs, const table_function& rhs);
 

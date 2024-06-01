@@ -17,7 +17,7 @@ double bisection_method(const grid& g, double value, const point& n, const int i
         return b;
     }
     if (fa * fb > 0) {
-        // Решение не существует на данном интервале
+        // no solution
         std::numeric_limits<double>::max();
     }
 
@@ -38,7 +38,6 @@ double bisection_method(const grid& g, double value, const point& n, const int i
     return (a + b) / 2;
 }
 
-// Построение линейной аппроксимации
 line_segment build_linear_approximation(const table_function& f, grid g, int i, int j) 
 {
     point n;

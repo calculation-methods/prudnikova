@@ -1,6 +1,7 @@
 #include "structures.h"
 
 
+// Точки
 point& point::operator=(const point& other) 
 {
     if (this != &other) {
@@ -10,33 +11,21 @@ point& point::operator=(const point& other)
     return *this;
 }
 
-table_function& table_function::operator=(const table_function& other) 
-{
-    if (this != &other) {
-        points = other.points;
-    }
-    return *this;
+bool point::operator!=(const point& other) const {
+    return x != other.x || y != other.y;
 }
 
-// Конструктор по умолчанию (без параметров)
-table_function::table_function() : points(0) {}
-
-// Конструктор с параметром для инициализации размера вектора
-table_function::table_function(int n, int m) : points(n, std::vector<double>(m, 0.0)) {}
-
-line_segment& line_segment::operator=(const line_segment& other) 
-{
-    if (this != &other) {
-        n = other.n;
-        rho = other.rho;
-    }
-    return *this;
+bool point::operator!() const {
+    return x == 0.0 && y == 0.0;
 }
 
-// Конструктор по умолчанию
+bool point::operator==(const point& other) const {
+    return x == other.x && y == other.y;
+}
+
+// Сетки
 grid::grid() {}
 
-// Конструктор с параметрами
 grid::grid(double dx, double dy, size_t sizex, size_t sizey) : delta_x(dx), delta_y(dy), x_size(sizex), y_size(sizey) {}
 
 grid::grid(size_t sizex, size_t sizey) : x_size(sizex), y_size(sizey) {}
@@ -45,47 +34,41 @@ grid& grid::operator=(const grid& other) {
     if (this != &other) {
         delta_x = other.delta_x;
         delta_y = other.delta_y;
+        x_size = other.x_size;
+        y_size = other.y_size;
     }
     return *this;
 }
 
-
-
-// Конструктор по умолчанию (без параметров)
-polygon::polygon() : vertex_num(0) {}
-
-// Конструктор с параметром для инициализации размера вектора
-polygon::polygon(int n) : vertex_num(n), vertex(n) {}
-
-// Конструктор копирования
-polygon::polygon(const polygon& other) : vertex_num(other.vertex_num), vertex(other.vertex) {}
-
-// Конструктор, принимающий вектор точек FunctionPoint
-polygon::polygon(const std::vector<point>& points) {
-    vertex_num = points.size();
-    vertex = points;
+bool operator==(const grid& lhs, const grid& rhs)
+{
+    return std::fabs(lhs.delta_x - rhs.delta_x) < 1e-10
+        && std::fabs(lhs.delta_y - rhs.delta_y) < 1e-10
+        && lhs.x_size == rhs.x_size
+        && lhs.y_size == rhs.y_size;
 }
 
-// Оператор присваивания
-polygon& polygon::operator=(const polygon& other) 
+// Табличные функции
+table_function& table_function::operator=(const table_function& other) 
 {
     if (this != &other) {
-        vertex_num = other.vertex_num;
-        vertex = other.vertex;
+        points = other.points;
+        f_grid = other.f_grid;
     }
     return *this;
 }
 
-// Дефолтный конструктор
-computation_params::computation_params() : velocity(), delta_t(0.0), grid_f() {}
+table_function::table_function() : points(0) {}
 
-// Конструктор с параметрами
-computation_params::computation_params(table_function vel, double dt, grid g)
-        : velocity(vel), delta_t(dt), grid_f(g) {}
+table_function::table_function(int n, int m) : points(n, std::vector<double>(m, 0.0)), f_grid(n, m) {}
 
-bool operator==(const point& lhs, const point& rhs)
+line_segment& line_segment::operator=(const line_segment& other) 
 {
-    return std::fabs(lhs.x - rhs.x) < 1e-10 && std::fabs(lhs.y - rhs.y) < 1e-10;
+    if (this != &other) {
+        n = other.n;
+        rho = other.rho;
+    }
+    return *this;
 }
 
 bool operator==(const table_function& lhs, const table_function& rhs)
@@ -102,17 +85,25 @@ bool operator==(const table_function& lhs, const table_function& rhs)
     return true;
 }
 
-bool operator==(const line_segment& lhs, const line_segment& rhs)
-{
-    return lhs.n == rhs.n && std::fabs(lhs.rho - rhs.rho) < 1e-10;
+// Многоугольники
+polygon::polygon() : vertex_num(0) {}
+
+polygon::polygon(int n) : vertex_num(n), vertex(n) {}
+
+polygon::polygon(const polygon& other) : vertex_num(other.vertex_num), vertex(other.vertex) {}
+
+polygon::polygon(const std::vector<point>& points) {
+    vertex_num = points.size();
+    vertex = points;
 }
 
-bool operator==(const grid& lhs, const grid& rhs)
+polygon& polygon::operator=(const polygon& other) 
 {
-    return std::fabs(lhs.delta_x - rhs.delta_x) < 1e-10
-        && std::fabs(lhs.delta_y - rhs.delta_y) < 1e-10
-        && lhs.x_size == rhs.x_size
-        && lhs.y_size == rhs.y_size;
+    if (this != &other) {
+        vertex_num = other.vertex_num;
+        vertex = other.vertex;
+    }
+    return *this;
 }
 
 bool operator==(const polygon& lhs, const polygon& rhs)
@@ -126,12 +117,25 @@ bool operator==(const polygon& lhs, const polygon& rhs)
     return true;
 }
 
+// Параметры
+computation_params::computation_params() : velocity(), delta_t(0.0), grid_f() {}
+
+computation_params::computation_params(table_function vel, double dt, grid g)
+        : velocity(vel), delta_t(dt), grid_f(g) {}
+
 bool operator==(const computation_params& lhs, const computation_params& rhs)
 {
     return lhs.velocity == rhs.velocity
         && std::fabs(lhs.delta_t - rhs.delta_t) < 1e-10
         && lhs.grid_f == rhs.grid_f;
 }
+
+
+bool operator==(const line_segment& lhs, const line_segment& rhs)
+{
+    return lhs.n == rhs.n && std::fabs(lhs.rho - rhs.rho) < 1e-10;
+}
+
 
 std::ostream& operator<<(std::ostream& os, const point& fp)
 {

@@ -1,10 +1,10 @@
 #include "readfile.h"
 
 
-Parameters read_parameters(const std::string& filename) 
+parameters read_parameters(const std::string& filename) 
 {
     std::ifstream file(filename);
-    Parameters params;
+    parameters params;
 
     if (file.is_open()) 
     {

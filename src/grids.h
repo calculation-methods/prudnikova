@@ -3,8 +3,7 @@
 
 #include "linear.h"
 
-// Функция, вычисляющая координаты вершин ij-ой ячейки сетки g
-polygon polygon_from_cell (const grid& g, const int i, const int j);
+polygon get_ij_cell_coords (const grid& g, const int i, const int j);
 
 std::vector<line_segment> line_segment_from_cell(grid g, const int i, const int j);
 

@@ -1,20 +1,19 @@
 #include "grids.h"
 
-// Функция, вычисляющая координаты вершин ij-ой ячейки сетки g
-polygon polygon_from_cell(const grid& g, const int i, const int j) 
+polygon get_ij_cell_coords(const grid& g, const int i, const int j) 
 {
     point lu, ld, ru, rd;
 
-    // Левый нижний угол
+    // left down
     ld.x = g.delta_x * i;
     ld.y = g.delta_y * j;
-    // Правый нижний угол
+    // right down
     rd.x = g.delta_x * i + 1;
     rd.y = g.delta_y * j; 
-    // Правый верхний угол
+    // right up
     ru.x = g.delta_x * i + 1;
     ru.y = g.delta_y * j + 1; 
-    // Левый верхний угол
+    // left up
     lu.x = g.delta_x * i;
     lu.y = g.delta_y * j + 1;
 
@@ -29,7 +28,7 @@ polygon polygon_from_cell(const grid& g, const int i, const int j)
 
 std::vector<line_segment> line_segment_from_cell(grid g, const int i, const int j) 
 {
-    polygon cell = polygon_from_cell(g, i, j);
+    polygon cell = get_ij_cell_coords(g, i, j);
 
     std::vector<line_segment> edges;
 
@@ -50,7 +49,7 @@ std::vector<line_segment> line_segment_from_cell(grid g, const int i, const int 
         {
             line.n.y /= std::sqrt(line.n.x * line.n.x + line.n.y * line.n.y);
         }
-        // Вычисляем значение по формуле линейной функции: n_x * x + n_y * y - rho = 0
+        // n_x * x + n_y * y - rho = 0
         line.rho = line.n.x * cell.vertex[cur].x + line.n.y * cell.vertex[cur].y;
 
         edges.push_back(line);

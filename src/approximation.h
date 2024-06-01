@@ -8,7 +8,6 @@
 
 double bisection_method(const grid& g, double value, const point& n, const int i, const int j);
 
-// Построение линейной аппроксимации
 line_segment build_linear_approximation(const table_function& f, grid g, int i, int j);
 
 

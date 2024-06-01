@@ -1,22 +1,69 @@
 #include "flux.h"
 
-// Функция для расчёта площади, прошедшей через правую грань ячейки
-double flux_right(const polygon& p, const computation_params& cond, int i, int j) 
+double calculate_flux(const polygon& p, const computation_params& cond, int i, int j, const char direction) 
 {
     polygon p1;
     p1.vertex_num = 0;
+    
+    point cell_edge_coord = {-1, -1};
+    point edge_first = {0, 0};
+    point edge_second = {0, 0};
 
-    double cell_edge_x = (i + 1) * cond.grid_f.delta_x;
-    point edge_down = {(i + 1) * cond.grid_f.delta_x, j * cond.grid_f.delta_y};
-    point edge_up = {(i + 1) * cond.grid_f.delta_x, (j + 1) * cond.grid_f.delta_y};
+    switch (direction) 
+            {
+                case 'u':
+                    cell_edge_coord.y = (j + 1) * cond.grid_f.delta_y;
+                    edge_first = {i * cond.grid_f.delta_x, (j + 1) * cond.grid_f.delta_y};
+                    edge_second = {(i + 1) * cond.grid_f.delta_x, (j + 1) * cond.grid_f.delta_y};
+                    break;
+                case 'd':
+                    cell_edge_coord.y = j * cond.grid_f.delta_y;
+                    edge_first = {i * cond.grid_f.delta_x, j * cond.grid_f.delta_y};
+                    edge_second = {(i + 1) * cond.grid_f.delta_x, j * cond.grid_f.delta_y};
+                    break;
+                case 'l':
+                    cell_edge_coord.x = i * cond.grid_f.delta_x;
+                    edge_first = {i * cond.grid_f.delta_x, j * cond.grid_f.delta_y};
+                    edge_second = {i * cond.grid_f.delta_x, (j + 1) * cond.grid_f.delta_y};
+                    break;
+                case 'r':
+                    cell_edge_coord.x = (i + 1) * cond.grid_f.delta_x;
+                    edge_first = {(i + 1) * cond.grid_f.delta_x, j * cond.grid_f.delta_y};
+                    edge_second = {(i + 1) * cond.grid_f.delta_x, (j + 1) * cond.grid_f.delta_y};
+                    break;
+                default: {
+                    edge_first = {i * cond.grid_f.delta_x, j * cond.grid_f.delta_y};
+                    edge_second = {(i + 1) * cond.grid_f.delta_x, (j + 1) * cond.grid_f.delta_y};
+                    break;
+                }
+            }
 
-    line_segment cell_edge = create_edge(edge_down, edge_up);
+
+    line_segment cell_edge = create_edge(edge_first, edge_second);
 
     for (int k = 0; k < p.vertex.size(); k++) {
-        double x = p.vertex[k].x + cond.delta_t * cond.velocity.points[i + 1][j];
+        double x = p.vertex[k].x;
         double y = p.vertex[k].y;
-        // Проверяем, прошла ли точка через правую грань ячейки
-        if (x > cell_edge_x) 
+        switch (direction)
+        {
+        case 'r':
+            x = p.vertex[k].x + cond.delta_t * cond.velocity.points[i + 1][j];
+            break;
+        case 'l':
+            x = p.vertex[k].x + cond.velocity.points[i][j] * cond.delta_t;
+            break;
+        case 'u':
+            y = p.vertex[k].y + cond.velocity.points[i][j + 1] * cond.delta_t;
+            break;
+        case 'd':
+            y = p.vertex[k].y + cond.velocity.points[i][j] * cond.delta_t;
+            break;
+        default:
+            break;
+        }
+        
+        // Check whether the point passed the cell edge
+        if (x > cell_edge_coord.x && y > cell_edge_coord.y) 
         {
             p1.vertex.push_back({x, y});
             p1.vertex_num += 1;
@@ -27,13 +74,13 @@ double flux_right(const polygon& p, const computation_params& cond, int i, int j
             int prev_vert_ind = k - 1;
             line_segment poly_edge = create_edge(p.vertex[k], p.vertex[next_vert_ind]);
 
-            point cross;
+            std::optional<point> intersection = PLIC::line_line_intersection(poly_edge, cell_edge);
 
-            if (PLIC::line_line_intersection(poly_edge, cell_edge, cross)) 
+            if (intersection.has_value()) 
             {
-                if (is_point_in_cell(cross, cond.grid_f, i, j)) 
+                if (is_point_in_cell(*intersection, cond.grid_f, i, j)) 
                 {
-                    p1.vertex.push_back(cross);
+                    p1.vertex.push_back(*intersection);
                     p1.vertex_num += 1;
                 }
             } else
@@ -44,11 +91,11 @@ double flux_right(const polygon& p, const computation_params& cond, int i, int j
                 } else 
                 {
                 poly_edge = create_edge(p.vertex[k], p.vertex[prev_vert_ind]);
-                if (PLIC::line_line_intersection(poly_edge, cell_edge, cross)) 
+                if (intersection.has_value()) 
                 {
-                    if (is_point_in_cell(cross, cond.grid_f, i, j)) 
+                    if (is_point_in_cell(*intersection, cond.grid_f, i, j)) 
                     {
-                        p1.vertex.push_back(cross);
+                        p1.vertex.push_back(*intersection);
                         p1.vertex_num += 1;
                     }
                 }
@@ -60,193 +107,7 @@ double flux_right(const polygon& p, const computation_params& cond, int i, int j
     return PLIC::polygon_area(p1);
 }
 
-// Функция для расчёта площади, прошедшей через верхнюю грань ячейки
-double flux_up(const polygon& p, const computation_params& cond, int i, int j) 
-{
-    polygon p1;
-    p1.vertex_num = 0;
-
-    double cell_edge_y = (j + 1) * cond.grid_f.delta_y;
-    point edge_left = {(i) * cond.grid_f.delta_x, (j + 1) * cond.grid_f.delta_y};
-    point edge_right = {(i + 1) * cond.grid_f.delta_x, (j + 1) * cond.grid_f.delta_y};
-
-    line_segment cell_edge = create_edge(edge_left, edge_right);
-
-    for (int k = 0; k < p.vertex.size(); k++) {
-        const double x = p.vertex[k].x;
-        const double y = p.vertex[k].y + cond.velocity.points[i][j + 1] * cond.delta_t;
-        // Проверяем, прошла ли точка через верхнюю грань ячейки
-        if (y > cell_edge_y) {
-            p1.vertex.push_back({x, y});
-            p1.vertex_num += 1;
-        } else 
-        {
-            int size = p.vertex.size();
-            int next_vert_ind = (k + 1) % size;
-            int prev_vert_ind = k - 1;
-            line_segment poly_edge = create_edge(p.vertex[k], p.vertex[next_vert_ind]);
-
-            point cross;
-
-            if (PLIC::line_line_intersection(poly_edge, cell_edge, cross)) 
-            {
-                if (is_point_in_cell(cross, cond.grid_f, i, j)) 
-                {
-                    p1.vertex.push_back(cross);
-                    p1.vertex_num += 1;
-                }
-            } else
-            {
-                if (k == 0) 
-                {
-                    int prev_vert_ind = size - 1;
-                } else 
-                {
-                poly_edge = create_edge(p.vertex[k], p.vertex[prev_vert_ind]);
-                if (PLIC::line_line_intersection(poly_edge, cell_edge, cross)) 
-                {
-                    if (is_point_in_cell(cross, cond.grid_f, i, j)) 
-                    {
-                        p1.vertex.push_back(cross);
-                        p1.vertex_num += 1;
-                    }
-                }
-            }
-        }
-    }
-    }
-
-    return PLIC::polygon_area(p1);
-}
-
-// Функция для расчёта площади, прошедшей через левую грань ячейки
-double flux_left(const polygon& p, const computation_params& cond, int i, int j) 
-{
-    if (i == 0) {
-        return 0;
-    }
-
-    polygon p1;
-    p1.vertex_num = 0;
-
-    double cell_edge_x = (i) * cond.grid_f.delta_x;
-    point edge_down = {(i) * cond.grid_f.delta_x, j * cond.grid_f.delta_y};
-    point edge_up = {(i) * cond.grid_f.delta_x, (j + 1) * cond.grid_f.delta_y};
-
-    line_segment cell_edge = create_edge(edge_down, edge_up);
-
-    for (int k = 0; k < p.vertex.size(); k++) {
-        const double x = p.vertex[k].x + cond.velocity.points[i - 1][j] * cond.delta_t;
-        const double y = p.vertex[k].y;
-        // Проверяем, прошла ли точка через левую грань ячейки
-        if (x > cell_edge_x) {
-            p1.vertex.push_back({x, y});
-            p1.vertex_num += 1;
-        } else 
-        {
-            int size = p.vertex.size();
-            int next_vert_ind = (k + 1) % size;
-            int prev_vert_ind = k - 1;
-            line_segment poly_edge = create_edge(p.vertex[k], p.vertex[next_vert_ind]);
-
-            point cross;
-
-            if (PLIC::line_line_intersection(poly_edge, cell_edge, cross)) 
-            {
-                if (is_point_in_cell(cross, cond.grid_f, i, j)) 
-                {
-                    p1.vertex.push_back(cross);
-                    p1.vertex_num += 1;
-                }
-            } else
-            {
-                if (k == 0) 
-                {
-                    int prev_vert_ind = size - 1;
-                } else 
-                {
-                poly_edge = create_edge(p.vertex[k], p.vertex[prev_vert_ind]);
-                if (PLIC::line_line_intersection(poly_edge, cell_edge, cross)) 
-                {
-                    if (is_point_in_cell(cross, cond.grid_f, i, j)) 
-                    {
-                        p1.vertex.push_back(cross);
-                        p1.vertex_num += 1;
-                    }
-                }
-            }
-        }
-    }
-    }
-
-    return PLIC::polygon_area(p1);
-}
-
-// Функция для расчёта площади, прошедшей через нижнюю грань ячейки
-double flux_down(const polygon& p, const computation_params& cond, int i, int j) 
-{
-    if (j == 0) {
-        return 0;
-    }
-
-    polygon p1;
-    p1.vertex_num = 0;
-
-    double cell_edge_y = (j) * cond.grid_f.delta_y;
-    point edge_left = {(i) * cond.grid_f.delta_x, (j) * cond.grid_f.delta_y};
-    point edge_right = {(i + 1) * cond.grid_f.delta_x, (j) * cond.grid_f.delta_y};
-
-    line_segment cell_edge = create_edge(edge_left, edge_right);
-
-    for (int k = 0; k < p.vertex.size(); k++) {
-        const double x = p.vertex[k].x;
-        const double y = p.vertex[k].y + cond.velocity.points[i][j - 1] * cond.delta_t;
-        // Проверяем, прошла ли точка через нижнюю грань ячейки
-        if (y > cell_edge_y) {
-            p1.vertex.push_back({x, y});
-            p1.vertex_num += 1;
-        } else 
-        {
-            int size = p.vertex.size();
-            int next_vert_ind = (k + 1) % size;
-            int prev_vert_ind = k - 1;
-            line_segment poly_edge = create_edge(p.vertex[k], p.vertex[next_vert_ind]);
-
-            point cross;
-
-            if (PLIC::line_line_intersection(poly_edge, cell_edge, cross)) 
-            {
-                if (is_point_in_cell(cross, cond.grid_f, i, j)) 
-                {
-                    p1.vertex.push_back(cross);
-                    p1.vertex_num += 1;
-                }
-            } else
-            {
-                if (k == 0) 
-                {
-                    int prev_vert_ind = size - 1;
-                } else 
-                {
-                poly_edge = create_edge(p.vertex[k], p.vertex[prev_vert_ind]);
-                if (PLIC::line_line_intersection(poly_edge, cell_edge, cross)) 
-                {
-                    if (is_point_in_cell(cross, cond.grid_f, i, j)) 
-                    {
-                        p1.vertex.push_back(cross);
-                        p1.vertex_num += 1;
-                    }
-                }
-            }
-        }
-    }
-    }
-
-    return PLIC::polygon_area(p1);
-}
-
-// Расчёт нового состояния ячейки с учётом двух потоков (вертикально)
-double flow_increment_down_up(const computation_params& cond, const table_function& f, const int i, const int j, const grid& f_grid) 
+double flow_increment_vertical(const computation_params& cond, const table_function& f, const int i, const int j, const grid& f_grid) 
 {
     line_segment approx_cur = build_linear_approximation(f, f_grid, i, j);
     polygon curr_cell_poly = PLIC::collect_polygon_vertices(approx_cur, f_grid, i, j);
@@ -255,30 +116,26 @@ double flow_increment_down_up(const computation_params& cond, const table_functi
 
     if (j == 0) 
     {
-        newArea -= flux_up(curr_cell_poly, cond, i, j);
+        newArea -= calculate_flux(curr_cell_poly, cond, i, j, 'u');
         return newArea;
     }
 
     line_segment approx_prev = build_linear_approximation(f, f_grid, i, j - 1);
     polygon prev_cell_poly = PLIC::collect_polygon_vertices(approx_prev, f_grid, i, j - 1);
     
-    newArea = flux_down(prev_cell_poly, cond, i, j) - flux_up(curr_cell_poly, cond, i, j);
+    newArea = calculate_flux(prev_cell_poly, cond, i, j, 'd') - calculate_flux(curr_cell_poly, cond, i, j, 'u');
 
-    if (newArea) {
-        return newArea;
-    } 
-    return 0;
+    return newArea;
 }
 
-// Расчёт нового состояния ячейки с учётом двух потоков (горизонтально)
-double flow_increment_left_right(const computation_params& cond, const table_function& f, const int i, const int j, const grid& f_grid) 
+double flow_increment_horizontal(const computation_params& cond, const table_function& f, const int i, const int j, const grid& f_grid) 
 {
     line_segment approx_cur = build_linear_approximation(f, f_grid, i, j);
     polygon curr_cell_poly = PLIC::collect_polygon_vertices(approx_cur, f_grid, i, j);
 
     if (std::abs(f.points[i][j] - 1) < 1e-6)
     {
-        curr_cell_poly = polygon_from_cell(f_grid, i, j);
+        curr_cell_poly = get_ij_cell_coords(f_grid, i, j);
     }
     
 
@@ -286,7 +143,7 @@ double flow_increment_left_right(const computation_params& cond, const table_fun
 
     if (i == 0) 
     {
-        newArea -= flux_right(curr_cell_poly, cond, i, j);
+        newArea -= calculate_flux(curr_cell_poly, cond, i, j, 'r');
         return newArea;
     }
 
@@ -295,12 +152,10 @@ double flow_increment_left_right(const computation_params& cond, const table_fun
 
     if (std::abs(f.points[i - 1][j] - 1) < 1e-6)
     {
-        prev_cell_poly = polygon_from_cell(f_grid, i - 1, j);
+        prev_cell_poly = get_ij_cell_coords(f_grid, i - 1, j);
     }
     
-    newArea = flux_left(prev_cell_poly, cond, i, j) - flux_right(curr_cell_poly, cond, i, j);
-    if (newArea) {
-        return newArea;
-    }
-    return 0;
+    newArea = calculate_flux(prev_cell_poly, cond, i, j, 'l') - calculate_flux(curr_cell_poly, cond, i, j, 'r');
+    
+    return newArea;
 }

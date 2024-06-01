@@ -9,12 +9,13 @@
 
 #include "structures.h"
 
-struct Parameters {
+struct parameters 
+{
     table_function f, u, v;
     double T, steps, delta_x, delta_y, delta_t;
 };
 
-Parameters read_parameters(const std::string& filename);
+parameters read_parameters(const std::string& filename);
 
 std::vector<table_function> readMatrices(std::istream& stream);
 
