@@ -117,6 +117,19 @@ bool operator==(const polygon& lhs, const polygon& rhs)
     return true;
 }
 
+double polygon::area ()
+{
+    auto det = [vertex] (const int i, const int j) { return vertex[i].x * vertex[j].y - vertex[j].x * vertex[i].y; };
+
+    double area = 0.;
+    const int size = vertex.size ();
+    for (int i = 0; i < size - 1; i++)
+      area += det(i, i + 1);
+    area += det(size - 1, 0);
+
+    return 0.5 * std::abs(area);
+}
+
 // Параметры
 computation_params::computation_params() : velocity(), delta_t(0.0), grid_f() {}
 

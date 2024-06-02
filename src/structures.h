@@ -69,6 +69,8 @@ struct polygon {
 
     // Оператор присваивания
     polygon& operator=(const polygon& other);
+
+    double area ();
 };
 
 struct computation_params {
