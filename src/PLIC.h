@@ -1,6 +1,6 @@
 #ifndef PLIC_H
 #define PLIC_H
-#include <algorithm> 
+#include <algorithm>
 #include <optional>
 
 #include "grids.h"

@@ -51,7 +51,6 @@ struct line_segment {
     line_segment& operator=(const line_segment& other);
 };
 
-
 struct polygon {
     int vertex_num;
     std::vector<point> vertex;
@@ -101,3 +100,4 @@ std::ostream& operator<<(std::ostream& os, const point& fp);
 std::ostream& operator<<(std::ostream& os, const polygon& poly);
 
 #endif
+
