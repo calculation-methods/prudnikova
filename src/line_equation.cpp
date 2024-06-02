@@ -8,7 +8,18 @@
 line_equation::line_equation(const double a_ext, const double b_ext, const double c_ext) :
   a(a_ext), b(b_ext), c(c_ext)
 {
-  normalize ();
+  normalize();
+}
+
+line_equation::line_equation(const point &start, const point &end)
+{
+  const point line_vector = {end.x - start.x, end.y - start.y};
+
+  a = line_vector.y;
+  b = -line_vector.x;
+  c = start.y * line_vector.x - start.x * line_vector.y
+
+  normalize();
 }
 
 void line_equation:normalize ()

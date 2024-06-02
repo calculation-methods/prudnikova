@@ -13,6 +13,7 @@ class line_equation
 
 public:
   line_equation(const double a_ext, const double b_ext, const double c_ext);
+  line_equation(const point &start, const point &end);
   ~line_equation() = default;
 
   double substitute (const double x, const double y)
