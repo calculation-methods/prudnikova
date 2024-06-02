@@ -1,6 +1,6 @@
 #include "PLIC.h"
 
-std::optional<point> PLIC::line_line_intersection(line_segment f1, line_segment f2) 
+std::optional<point> PLIC::line_line_intersection(const line_segment &f1, const line_segment &f2)
 {
     const double normal_1_x = f1.n.x;
     const double normal_1_y = f1.n.y;
@@ -13,7 +13,7 @@ std::optional<point> PLIC::line_line_intersection(line_segment f1, line_segment 
     const double det = normal_1_x * normal_2_y - normal_1_y * normal_2_x;
 
     // If det equaol to 0 => lines are parallel or the same
-    if (std::fabs(det) < 1e-10) {
+    if (std::fabs(det) < PLIC::epsilon) {
         return std::nullopt;
     }
 
