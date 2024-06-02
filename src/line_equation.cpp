@@ -1,6 +1,7 @@
 #include "line_equaiton.h"
 
 #include "structures.h"
+#include "slau.h"
 
 #include <cmath>
 
@@ -29,7 +30,15 @@ double line_equation::substitute (const point &p)
   return substitute (p.x, p.y);
 }
 
-std::optional<point> line_equation::cross (const line_equation &l)
+std::optional<point> line_equation::cross (const line_equation &other)
 {
+  const matrix_2x2 A = {{  this.a,  this.b},
+                        { other.a, other.b}};
+  const matrix_2x1 b = { -this.c, -other.c};
+
+  if (const matrix_2x1 result = slau::kramer_method (A, b))
+    return {result[0], result[1]};
+
+  return std::nullopt;
 }
 
