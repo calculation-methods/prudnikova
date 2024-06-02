@@ -2,6 +2,7 @@ project(tests)
 cmake_minimum_required(VERSION 3.20)
 
 find_package(Boost COMPONENTS unit_test_framework REQUIRED)
+include_directories(${Boost_INCLUDE_DIRS})
 
 set(TEST_SOURCES1
     area.cpp
