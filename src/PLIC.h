@@ -12,10 +12,9 @@ namespace PLIC
     constexpr double epsilon = 1e-10;
 
     std::optional<point> line_line_intersection(const line_equation &f1, const line_equation &f2);
-    std::optional<point> line_line_intersection(const line_segment &f1, const line_segment &f2);
-    bool point_to_line_relation(const point &point, const line_segment &lf);
-    polygon collect_polygon_vertices(const line_segment &lf, const grid &g, const int i, const int j);
-    double polygon_area(const polygon& p);
+    bool point_to_line_relation(const point &pnt, const line_equation &line_eq);
+    polygon collect_polygon_vertices(const line_equation &line_eq, const polygon &plgn);
+    double polygon_area(const polygon &plgn);
 }
 
 #endif

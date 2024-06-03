@@ -5,6 +5,8 @@
 #include <cmath>
 #include <iostream>
 
+class polygon;
+
 struct point {
     double x;
     double y;
@@ -27,6 +29,8 @@ struct grid {
     grid(double dx, double dy, size_t sizex, size_t sizey);
 
     grid(size_t sizex, size_t sizey);
+
+    polygon get_cell (const int i, const int j) const;
 
     grid& operator=(const grid& other);
 };
@@ -66,11 +70,12 @@ struct polygon {
 
     // Конструктор, принимающий вектор точек FunctionPoint
     polygon(const std::vector<point>& points);
+    size_t size() const;
 
     // Оператор присваивания
     polygon& operator=(const polygon& other);
 
-    polygon operator[](const unsigned int);
+    const point &operator[](const int index) const;
 
     double area () const;
 };

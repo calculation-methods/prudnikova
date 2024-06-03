@@ -2,6 +2,8 @@
 
 #include "line_equation.h"
 
+#include <vector>
+
 
 std::optional<point> PLIC::line_line_intersection(const line_equation &line_eq1, const line_equation &line_eq2)
 {
@@ -15,42 +17,25 @@ bool PLIC::point_to_line_relation(const point &pnt, const line_equation &line_eq
 
 polygon PLIC::collect_polygon_vertices(const line_equation &line_eq, const polygon &plgn)
 {
-  polygon result;
+  std::vector<point> result;
 
-  auto is_liquid_point = [&line_eq] (const point &pnt) { return line_eq.substitute (plgn) >= 0.; };
+  auto is_liquid_point = [&line_eq] (const point &pnt) { return point_to_line_relation(pnt, line_eq); };
 
-  std::vector<bool> is_liquid_vertex;
-  for (const point &curr_pnt : plgn.vertexes)
-    is_liquid_vertex.push_back (is_liquid_point (plgn[i]));
-
-  for (int i = 0; i < size; ++i)
+  const size_t size = plgn.size ();
+  for (size_t i = 0; i < size; ++i)
   {
-    const point start_vertex = plgn[i];
-    const point end_vertex = plgn[i+1];
+    const point &begin_edge = plgn[i];
+    const point &end_edge = plgn[(i+1) % size];
 
-    const bool both_vertex_liquid = is_liquid_vertex[i] && is_liquid_vertex[i+1];
-    if (both_vertex_liquid)
-    {
-      result.push_back (start_vertex);
-      continue;
-    }
+    if (is_liquid_point(begin_edge))
+      result.push_back (begin_edge);
 
-    const bool only_start_vertex_liquid = is_liquid_vertex[i];
-    if (only_start_vertex_liquid)
-    {
-      result.push_back (start_vertex);
-      result.push_back (line_eq.cross (line_eq (start_vertex, end_vertex)));
-    }
-
-    const bool only_end_vertex_liquid = is_liquid_vertex[i];
-    if (only_end_vertex_liquid)
-    {
-      result.push_back (line_eq.cross (line_eq (start_vertex, end_vertex)));
-      result.push_back (end_vertex);
-    }
+    const bool is_edge_split = is_liquid_point(begin_edge) != is_liquid_point(end_edge);
+    if (is_edge_split)
+      result.push_back (line_eq.cross (line_eq (begin_edge, end_edge)));
   }
 
-  return result;
+  return polygon (result);
 }
 
 double PLIC::polygon_area(const polygon &plgn)

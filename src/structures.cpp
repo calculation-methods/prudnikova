@@ -30,6 +30,16 @@ grid::grid(double dx, double dy, size_t sizex, size_t sizey) : delta_x(dx), delt
 
 grid::grid(size_t sizex, size_t sizey) : x_size(sizex), y_size(sizey) {}
 
+polygon grid::get_cell (const int i, const int j) const
+{
+  const point upper_left = {delta_x * i, delta_y * j};
+  const point down_left  = {delta_x * i, delta_y * j};
+  const point down_right = {delta_x * i, delta_y * j};
+  const point upper_right= {delta_x * i, delta_y * j};
+
+  return {upper_left, down_left, down_right, upper_right};
+}
+
 grid& grid::operator=(const grid& other) {
     if (this != &other) {
         delta_x = other.delta_x;
@@ -97,6 +107,11 @@ polygon::polygon(const std::vector<point>& points) {
     vertex = points;
 }
 
+size_t polygon::size() const
+{
+  return vertex.size ();
+}
+
 polygon& polygon::operator=(const polygon& other) 
 {
     if (this != &other) {
@@ -104,6 +119,11 @@ polygon& polygon::operator=(const polygon& other)
         vertex = other.vertex;
     }
     return *this;
+}
+
+const point polygon::operator[](const int index) const
+{
+  return vertex[index];
 }
 
 bool operator==(const polygon& lhs, const polygon& rhs)
@@ -117,7 +137,7 @@ bool operator==(const polygon& lhs, const polygon& rhs)
     return true;
 }
 
-double polygon::area ()
+double polygon::area () const
 {
     auto det = [vertex] (const int i, const int j) { return vertex[i].x * vertex[j].y - vertex[j].x * vertex[i].y; };
 
