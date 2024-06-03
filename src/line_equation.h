@@ -18,9 +18,9 @@ public:
   line_equation(const point &start, const point &end);
   ~line_equation() = default;
 
-  double substitute (const double x, const double y);
-  double substitute (const point &p);
-  std::optional<point> cross (const line_equation &l);
+  double substitute (const double x, const double y) const;
+  double substitute (const point &p) const;
+  std::optional<point> cross (const line_equation &l) const;
 }
 
 #endif
