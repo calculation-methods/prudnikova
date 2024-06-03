@@ -1,6 +1,8 @@
 #ifndef LINE_EQUATION_H
 #define LINE_EQUATION_H
 
+#include <optional>
+
 struct point;
 
 class line_equation
@@ -16,7 +18,7 @@ public:
   line_equation(const point &start, const point &end);
   ~line_equation() = default;
 
-  double substitute (const double x, const double y)
+  double substitute (const double x, const double y);
   double substitute (const point &p);
   std::optional<point> cross (const line_equation &l);
 }

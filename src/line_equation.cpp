@@ -22,7 +22,7 @@ line_equation::line_equation(const point &start, const point &end)
   normalize();
 }
 
-void line_equation:normalize ()
+void line_equation::normalize ()
 {
   const double normalization_mult = std::sqrt (a * a + b * b);
 
