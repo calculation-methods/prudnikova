@@ -2,6 +2,7 @@
 
 #include "line_equation.h"
 
+
 std::optional<point> PLIC::line_line_intersection(const line_equation &line_eq1, const line_equation &line_eq2)
 {
   return line_eq1.cross(line_eq2);
@@ -34,7 +35,7 @@ std::optional<point> PLIC::line_line_intersection(const line_segment &f1, const 
 
 bool PLIC::point_to_line_relation(const point &pnt, const line_equation &line_eq)
 {
-  return line_eq.sustitute(pnt) >= 0.;
+  return line_eq.substitute(pnt) >= 0.;
 }
 
 bool PLIC::point_to_line_relation(const point& point, const line_segment& lf)
