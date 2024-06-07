@@ -17,6 +17,21 @@ struct point {
     bool operator==(const point& other) const;
 };
 
+enum class orientation
+{
+  horizontal,
+  vertical,
+  other
+};
+
+struct grid_edge
+{
+  point start;
+  point end;
+
+  orientation get_orientation() const;
+};
+
 struct grid {
     double delta_x;
     double delta_y;
@@ -32,6 +47,9 @@ struct grid {
 
     polygon get_cell (const int i, const int j) const;
 
+    grid_edge get_vertical_edge (const int i, const int j) const;
+    grid_edge get_horizontal_edge (const int i, const int j) const;
+
     grid& operator=(const grid& other);
 };
 
@@ -46,6 +64,8 @@ struct table_function {
     table_function(int n, int m);
 
     table_function& operator=(const table_function& other);
+
+    double value (const int i, const int j) { return points[i][j]; }
 };
 
 struct line_segment {

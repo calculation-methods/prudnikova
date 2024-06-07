@@ -1,4 +1,4 @@
-#include "line_equaiton.h"
+#include "line_equation.h"
 
 #include "structures.h"
 #include "slau.h"
@@ -53,3 +53,12 @@ std::optional<point> line_equation::cross (const line_equation &other)
   return std::nullopt;
 }
 
+double line_equation::compute_y(const double x) const
+{
+    return (-c - a * x) / b;
+}
+
+double line_equation::compute_x(const double y) const
+{
+    return (-c - b * y) / a;
+}

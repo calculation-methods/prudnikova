@@ -23,6 +23,15 @@ bool point::operator==(const point& other) const {
     return x == other.x && y == other.y;
 }
 
+orientation grid_edge::get_orientation() const
+{
+  if (start.x = end.x)
+    return orientation::vertical;
+  if (start.y = end.y)
+    return orientation::horizontal;
+  return orientation::other;
+}
+
 // Сетки
 grid::grid() {}
 
@@ -38,6 +47,28 @@ polygon grid::get_cell (const int i, const int j) const
   const point upper_right= {delta_x * i, delta_y * j};
 
   return {upper_left, down_left, down_right, upper_right};
+}
+
+grid_edge grid::get_vertical_edge (const int i, const int j) const
+{
+  const double x_coord = i * delta_x;
+  const double y_coord = (j - 1) * delta_y;
+
+  const point start (x_coord, y_coord);
+  const point end   (x_coord, y_coord + delta_y);
+
+  return {start, end};
+}
+
+grid_edge grid::get_horizontal_edge (const int i, const int j) const
+{
+  const double x_coord = (i - 1) * delta_x;
+  const double y_coord = j * delta_y;
+
+  const point start (          x_coord, y_coord);
+  const point end   (delta_x + x_coord, y_coord);
+
+  return {start, end};
 }
 
 grid& grid::operator=(const grid& other) {

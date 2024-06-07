@@ -21,6 +21,8 @@ public:
   double substitute (const double x, const double y) const;
   double substitute (const point &p) const;
   std::optional<point> cross (const line_equation &l) const;
+  double compute_y(const double x) const;
+  double compute_x(const double y) const;
 }
 
 #endif

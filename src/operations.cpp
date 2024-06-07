@@ -1,7 +1,9 @@
 #include "operations.h"
 
-double df_dx(const table_function& f, const grid& g, int i, int j) 
+double df_dx(const table_function &f, int i, int j)
 {
+    const grid &g = f.f_grid;
+
     if (i < 0 || i >= f.points.size()) 
     {
         return 0;

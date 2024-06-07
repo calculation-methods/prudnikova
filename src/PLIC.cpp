@@ -1,6 +1,7 @@
 #include "PLIC.h"
 
 #include "line_equation.h"
+#include "structures.h"
 
 #include <vector>
 
@@ -15,11 +16,11 @@ bool PLIC::point_to_line_relation(const point &pnt, const line_equation &line_eq
   return line_eq.substitute(pnt) >= 0.;
 }
 
-polygon PLIC::collect_polygon_vertices(const line_equation &line_eq, const polygon &plgn)
+polygon PLIC::cut_polygon_by_interface(const line_equation &interface, const polygon &plgn)
 {
   std::vector<point> result;
 
-  auto is_liquid_point = [&line_eq] (const point &pnt) { return point_to_line_relation(pnt, line_eq); };
+  auto is_liquid_point = [&interface] (const point &pnt) { return PLIC::point_to_line_relation(pnt, interface); };
 
   const size_t size = plgn.size ();
   for (size_t i = 0; i < size; ++i)
@@ -32,10 +33,10 @@ polygon PLIC::collect_polygon_vertices(const line_equation &line_eq, const polyg
 
     const bool is_edge_split = is_liquid_point(begin_edge) != is_liquid_point(end_edge);
     if (is_edge_split)
-      result.push_back (line_eq.cross (line_eq (begin_edge, end_edge)));
+      result.push_back (PLIC::line_line_intersection(interface, line_equation (begin_edge, end_edge)));
   }
 
-  return polygon (result);
+  return PLIC::polygon_area (polygon (result));
 }
 
 double PLIC::polygon_area(const polygon &plgn)
