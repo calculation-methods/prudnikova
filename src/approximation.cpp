@@ -1,65 +1,53 @@
 #include "approximation.h"
 
-double approx_area(const grid& g, double rho, const point& n, int i, int j, double value)
+point compute_normal(const table_function &f, int i, int j)
 {
-    line_equation lf = {n, rho};
+  const double delta_x = f.f_grid.delta_x;
+  const double delta_y = f.f_grid.delta_y;
 
-    polygon result = PLIC::collect_polygon_vertices(lf, g.get_cell (i, j));
+  point normal;
+  normal.x = 0.5 * (f[i + 1][j] - f[i - 1][j]) / delta_x;
+  normal.y = 0.5 * (f[i][j + 1] - f[i][j - 1]) / delta_y;
 
-    const double area = PLIC::polygon_area(result);
-    return area - value;
+  return normal;
 }
 
-double bisection_method(const grid& g, double value, const point& n, const int i, const int j)
+double compute_rho(const double etalon_value, const polygon &cell, const line_equation &slider_line)
 {
-    double a = - 1;
-    double b = g.delta_x * g.x_size + 1;
+  std::vector<std::pair<double, double>> vof_vs_rho;
+  for (const point &vertex : cell)
+  {
+    const double rho = slider_line.compute_distance (vertex)
+    const double vof = PLIC::collect_polygon_vertices(line_equation (slider_line.x, slider_line.y, -rho), cell);
+    rho.push_back (vor, rho);
+  }
 
-    double eps = 1e-6;
+  auto sort_by_vof = [] (const auto &a, const auto &b) { return a.vof < b.vof; }; 
+  double rho_min = ranges::min (rho, sort_by_vof);
+  double rho_max = ranges::max (rho, sort_by_vof);
 
-    double fa = approx_area(g, a, n, i, j, value);
-    double fb = approx_area(g, b, n, i, j, value);
+  constexpr double eps = 1e-6;
+  while (std::abs(rho_max - rho_min) > eps) {
+      const double rho_mean = 0.5 * (rho_min + rho_max);
+      const line_equation new_line(n.x, n.y, -rho_mean);
+      const new_vof = PLIC::collect_polygon_vertices(new_line, cell);
+      if (new_vof > etalon_vof)
+        rho_max = rho_mean;
+      else
+        rho_min = rho_mean;
+  }
 
-    if (fa == 0) {
-        return a;
-    }
-    if (fb == 0) {
-        return b;
-    }
-    if (fa * fb > 0) {
-        // no solution
-        std::numeric_limits<double>::max();
-    }
-
-    while (std::abs(b - a) > eps) {
-        double c = (a + b) / 2;
-        double fc = approx_area(g, c, n, i, j, value);
-        if (fc == 0) {
-            return c;
-        }
-        if (fa * fc < 0) {
-            b = c;
-        } else {
-            a = c;
-            fa = fc;
-        }
-    }
-
-    return (a + b) / 2;
+  return (rho_max + rho_min) / 2;
 }
 
 line_segment build_linear_approximation(const table_function &f, int i, int j)
 {
+    const point normal = compute_normal(f, i, j);
+
     const grid &g = f.f_grid;
+    const double liquid_volume = f.points[i][j] * g.delta_x * g.delta_y;
+    const double rho = compute_rho(liquid_volume, grid.get_cell (i,j), normal);
 
-    point n;
-    n.x = 0.5 * (f[i + 1][j] - f[i - 1][j]) / g.delta_x;
-    n.y = 0.5 * (f[i][j + 1] - f[i][j - 1]) / g.delta_y;
-
-    double value = f.points[i][j] * g.delta_x * g.delta_y;
-
-    const double rho = bisection_method(g, value, n, i, j);
-
-    return line_equation (n.x, n.y, rho);
+    return line_equation (normal.x, normal.y, -rho);
 }
 
