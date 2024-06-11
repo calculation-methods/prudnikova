@@ -2,6 +2,15 @@
 
 
 // Точки
+point operator-(const point &left, const point &right)
+{
+  point result;
+  result.x = left.x - right.x;
+  result.y = left.y - right.y;
+
+  return result;
+}
+
 point& point::operator=(const point& other) 
 {
     if (this != &other) {
@@ -25,9 +34,9 @@ bool point::operator==(const point& other) const {
 
 orientation grid_edge::get_orientation() const
 {
-  if (start.x = end.x)
+  if (start.x == end.x)
     return orientation::vertical;
-  if (start.y = end.y)
+  if (start.y == end.y)
     return orientation::horizontal;
   return orientation::other;
 }
@@ -129,6 +138,8 @@ bool operator==(const table_function& lhs, const table_function& rhs)
 // Многоугольники
 polygon::polygon() : vertex_num(0) {}
 
+polygon::polygon(std::initializer_list<point> points) : vertex(points) {}
+
 polygon::polygon(int n) : vertex_num(n), vertex(n) {}
 
 polygon::polygon(const polygon& other) : vertex_num(other.vertex_num), vertex(other.vertex) {}
@@ -152,7 +163,7 @@ polygon& polygon::operator=(const polygon& other)
     return *this;
 }
 
-const point polygon::operator[](const int index) const
+const point &polygon::operator[](const int index) const
 {
   return vertex[index];
 }
@@ -170,7 +181,7 @@ bool operator==(const polygon& lhs, const polygon& rhs)
 
 double polygon::area () const
 {
-    auto det = [vertex] (const int i, const int j) { return vertex[i].x * vertex[j].y - vertex[j].x * vertex[i].y; };
+    auto det = [this] (const int i, const int j) { return vertex[i].x * vertex[j].y - vertex[j].x * vertex[i].y; };
 
     double area = 0.;
     const int size = vertex.size ();

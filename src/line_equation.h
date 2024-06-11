@@ -7,6 +7,7 @@ struct point;
 
 class line_equation
 {
+public:
   double a;
   double b;
   double c;
@@ -14,6 +15,7 @@ class line_equation
   void normalize ();
 
 public:
+  line_equation() = default;
   line_equation(const double a_ext, const double b_ext, const double c_ext);
   line_equation(const point &start, const point &end);
   ~line_equation() = default;
@@ -23,6 +25,7 @@ public:
   std::optional<point> cross (const line_equation &l) const;
   double compute_y(const double x) const;
   double compute_x(const double y) const;
-}
+  double compute_distance (const point &p) const;
+};
 
 #endif

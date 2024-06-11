@@ -11,6 +11,9 @@ struct point {
     double x;
     double y;
 
+    point() = default;
+    point(const double x_ext, const double y_ext) : x(x_ext), y(y_ext) {}
+
     point& operator=(const point& other);
     bool operator!=(const point& other) const;
     bool operator!() const;
@@ -82,6 +85,8 @@ struct polygon {
     // Конструктор по умолчанию (без параметров)
     polygon();
 
+    polygon(std::initializer_list<point> points);
+
     // Конструктор с параметром для инициализации размера вектора
     polygon(int n);
 
@@ -96,6 +101,9 @@ struct polygon {
     polygon& operator=(const polygon& other);
 
     const point &operator[](const int index) const;
+
+    auto begin() const { return vertex.begin(); }
+    auto end() const { return vertex.end(); }
 
     double area () const;
 };
@@ -127,6 +135,8 @@ bool operator==(const computation_params& lhs, const computation_params& rhs);
 std::ostream& operator<<(std::ostream& os, const point& fp);
 
 std::ostream& operator<<(std::ostream& os, const polygon& poly);
+
+point operator-(const point &left, const point &right);
 
 #endif
 

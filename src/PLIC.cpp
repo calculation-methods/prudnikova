@@ -16,7 +16,7 @@ bool PLIC::point_to_line_relation(const point &pnt, const line_equation &line_eq
   return line_eq.substitute(pnt) >= 0.;
 }
 
-polygon PLIC::cut_polygon_by_interface(const line_equation &interface, const polygon &plgn)
+double PLIC::cut_polygon_by_interface(const line_equation &interface, const polygon &plgn)
 {
   std::vector<point> result;
 
@@ -33,7 +33,7 @@ polygon PLIC::cut_polygon_by_interface(const line_equation &interface, const pol
 
     const bool is_edge_split = is_liquid_point(begin_edge) != is_liquid_point(end_edge);
     if (is_edge_split)
-      result.push_back (PLIC::line_line_intersection(interface, line_equation (begin_edge, end_edge)));
+      result.push_back (*PLIC::line_line_intersection(interface, line_equation (begin_edge, end_edge)));
   }
 
   return PLIC::polygon_area (polygon (result));

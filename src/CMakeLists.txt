@@ -3,7 +3,7 @@ project(diploma)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(src main.cpp approximation.cpp time.cpp flux.cpp operations.cpp PLIC.cpp printfile.cpp readfile.cpp structures.cpp line_equation.cpp)
+add_executable(src main.cpp approximation.cpp time.cpp flux.cpp PLIC.cpp printfile.cpp readfile.cpp structures.cpp line_equation.cpp slau.cpp)
 
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/tests)
 
