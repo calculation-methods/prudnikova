@@ -1,7 +1,10 @@
-project(tests)
-
 find_package(Boost COMPONENTS unit_test_framework)
 include_directories(${Boost_INCLUDE_DIRS})
+
+add_executable(linear_equations slau.cpp)
+target_link_libraries(linear_equations PUBLIC math_methods)
+target_include_directories (linear_equations PUBLIC ${PROJECT_SOURCE_DIR}/math)
+add_test(NAME solve_linear_equation_test COMMAND linear_equations)
 
 # set(TEST_SOURCES1
 #     area.cpp
