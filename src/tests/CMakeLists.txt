@@ -6,12 +6,15 @@ target_link_libraries(linear_equations PUBLIC math_methods)
 target_include_directories (linear_equations PUBLIC ${PROJECT_SOURCE_DIR}/math)
 add_test(NAME solve_linear_equation_test COMMAND linear_equations)
 
-# set(TEST_SOURCES1
-#     area.cpp
-#     ${CMAKE_CURRENT_SOURCE_DIR}/area.cpp
-#     ${CMAKE_SOURCE_DIR}/structures.cpp
-#     ${CMAKE_SOURCE_DIR}/PLIC.cpp
-# )
+set(TEST_SOURCES1
+    area.cpp
+    ${PROJECT_SOURCE_DIR}/line_equation.cpp
+)
+set(POLYGON_AREA polygon_area)
+add_executable(${POLYGON_AREA} ${TEST_SOURCES1})
+target_link_libraries(${POLYGON_AREA} PUBLIC math_methods)
+target_include_directories (${POLYGON_AREA} PUBLIC "${PROJECT_SOURCE_DIR}/math")
+add_test(NAME ${POLYGON_AREA} COMMAND ${POLYGON_AREA})
 
 # set(TEST_SOURCES2
 #     PLIC.cpp
@@ -27,7 +30,6 @@ add_test(NAME solve_linear_equation_test COMMAND linear_equations)
 #     ${CMAKE_SOURCE_DIR}/PLIC.cpp
 # )
 
-# add_executable(polygon_area ${TEST_SOURCES1})
 # add_executable(PLIC ${TEST_SOURCES2})
 # add_executable(linear_solver ${TEST_SOURCES3})
 

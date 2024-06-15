@@ -7,7 +7,7 @@ BOOST_AUTO_TEST_CASE(slau_test)
 {
   const matrix_extended system = {{{{1.,2.,3.}},
                                    {{4.,5.,6.}}}};
-  const column result_analyt = {{-1,2}};
+  const column result_analyt = {{-1.,2.}};
 
   const slau test_slau (system);
   const column result_calced = test_slau.solve ();
