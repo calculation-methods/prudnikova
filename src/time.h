@@ -28,4 +28,7 @@ public:
   table_function time_integration(const table_function &vof_0, const double finish_time) const;
 };
 
+polygon volume_flux_polygon (const point &offset, const grid_edge &edge);
+double compute_flux(const line_equation &interface, const grid_edge &edge, const double velocity, const double delta_t);
+
 #endif
