@@ -1,5 +1,6 @@
 #ifndef PLIC_H
 #define PLIC_H
+
 #include <algorithm>
 #include <optional>
 

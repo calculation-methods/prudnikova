@@ -2,6 +2,7 @@
 #define TIME_H
 
 #include "structures.h"
+#include "line_equation.h"
 
 using interface_field = std::vector<std::vector<line_equation>>;
 

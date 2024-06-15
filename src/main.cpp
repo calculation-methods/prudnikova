@@ -1,7 +1,4 @@
-#include "approximation.h"
 #include "time.h"
-#include "operations.h"
-#include "PLIC.h"
 #include "printfile.h"
 #include "readfile.h"
 #include "structures.h"

@@ -1,10 +1,9 @@
 #include "PLIC.h"
 
-#include "line_equation.h"
-#include "structures.h"
-
 #include <vector>
 
+#include "line_equation.h"
+#include "structures.h"
 
 std::optional<point> PLIC::line_line_intersection(const line_equation &line_eq1, const line_equation &line_eq2)
 {
