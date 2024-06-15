@@ -16,6 +16,11 @@ namespace PLIC
     bool point_to_line_relation(const point &pnt, const line_equation &line_eq);
     double cut_polygon_by_interface(const line_equation &interface, const polygon &plgn);
     double polygon_area(const polygon &plgn);
+
+    point compute_normal(const table_function &f, int i, int j);
+    double compute_rho(const double etalon_value, const polygon &cell, const line_equation &slider_line);
+    line_equation build_linear_approximation(const table_function &f, int i, int j);
 }
+
 
 #endif

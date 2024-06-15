@@ -1,7 +1,7 @@
+#include "time.h"
+
 #include "line_equation.h"
 #include "structures.h"
-#include "time.h"
-#include "approximation.h"
 #include "PLIC.h"
 
 interface_field solver::compute_interfaces (const table_function &vof) const
@@ -14,7 +14,7 @@ interface_field solver::compute_interfaces (const table_function &vof) const
     {
       interfaces[i].resize (jmax + 1);
       for (int j = 0; j < jmax; j++)
-        interfaces[i][j] = build_linear_approximation(vof, i, j);
+        interfaces[i][j] = PLIC::build_linear_approximation(vof, i, j);
     }
 
   return interfaces;
