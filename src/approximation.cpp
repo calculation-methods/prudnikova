@@ -1,5 +1,7 @@
 #include "approximation.h"
+
 #include "PLIC.h"
+#include "structures.h"
 
 point compute_normal(const table_function &f, int i, int j)
 {
