@@ -1,0 +1,17 @@
+{
+  "version": 6,
+  "configurePresets": [
+    {
+      "name": "base",
+      "displayName": "my default",
+      "description": "experimental configure preset",
+      "binaryDir": "${sourceDir}/build/default"
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "default",
+      "configurePreset": "base"
+    }
+  ]
+}
