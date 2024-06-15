@@ -1,6 +1,5 @@
 #include "approximation.h"
 #include "time.h"
-#include "flux.h"
 #include "operations.h"
 #include "PLIC.h"
 #include "printfile.h"

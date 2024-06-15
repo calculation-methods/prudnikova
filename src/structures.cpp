@@ -112,15 +112,6 @@ table_function::table_function() : points(0) {}
 
 table_function::table_function(int n, int m) : points(n, std::vector<double>(m, 0.0)), f_grid(n, m) {}
 
-line_segment& line_segment::operator=(const line_segment& other) 
-{
-    if (this != &other) {
-        n = other.n;
-        rho = other.rho;
-    }
-    return *this;
-}
-
 bool operator==(const table_function& lhs, const table_function& rhs)
 {
     if (lhs.points.size() != rhs.points.size()) return false;
@@ -204,13 +195,6 @@ bool operator==(const computation_params& lhs, const computation_params& rhs)
         && std::fabs(lhs.delta_t - rhs.delta_t) < 1e-10
         && lhs.grid_f == rhs.grid_f;
 }
-
-
-bool operator==(const line_segment& lhs, const line_segment& rhs)
-{
-    return lhs.n == rhs.n && std::fabs(lhs.rho - rhs.rho) < 1e-10;
-}
-
 
 std::ostream& operator<<(std::ostream& os, const point& fp)
 {

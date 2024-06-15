@@ -1,7 +1,6 @@
 #ifndef TIME_H
 #define TIME_H
 
-#include "flux.h"
 #include "structures.h"
 
 using interface_field = std::vector<std::vector<line_equation>>;

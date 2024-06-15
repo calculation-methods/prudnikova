@@ -1,6 +1,8 @@
 #include "line_equation.h"
 #include "structures.h"
 #include "time.h"
+#include "approximation.h"
+#include "PLIC.h"
 
 interface_field solver::compute_interfaces (const table_function &vof) const
 {

@@ -117,8 +117,6 @@ struct computation_params {
 
 bool operator==(const table_function& lhs, const table_function& rhs);
 
-bool operator==(const line_segment& lhs, const line_segment& rhs);
-
 bool operator==(const rectangular_grid& lhs, const rectangular_grid& rhs);
 
 bool operator==(const polygon& lhs, const polygon& rhs);
