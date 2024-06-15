@@ -3,6 +3,7 @@
 
 #include "structures.h"
 #include "line_equation.h"
+#include "grid.h"
 
 using interface_field = std::vector<std::vector<line_equation>>;
 

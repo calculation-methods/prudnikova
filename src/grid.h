@@ -1,8 +1,7 @@
 #ifndef GRID_H
 #define GRID_H
 
-class point;
-class polygon;
+#include "line_equation.h"
 
 enum class orientation
 {
@@ -39,5 +38,7 @@ struct rectangular_grid {
 
     rectangular_grid& operator=(const rectangular_grid& other);
 };
+
+bool operator==(const rectangular_grid& lhs, const rectangular_grid& rhs);
 
 #endif /* GRID_H */

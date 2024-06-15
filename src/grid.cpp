@@ -1,7 +1,6 @@
 #include "grid.h"
 
-#include "structures.h"
-#include "line_equation.h"
+#include <cmath>
 
 orientation grid_edge::get_orientation() const
 {
