@@ -1,5 +1,5 @@
-#ifndef ASSEMBLE_H
-#define ASSEMBLE_H
+#ifndef TIME_H
+#define TIME_H
 
 #include "flux.h"
 #include "structures.h"
