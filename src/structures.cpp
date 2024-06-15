@@ -42,13 +42,13 @@ orientation grid_edge::get_orientation() const
 }
 
 // Сетки
-grid::grid() {}
+rectangular_grid::rectangular_grid() {}
 
-grid::grid(double dx, double dy, size_t sizex, size_t sizey) : delta_x(dx), delta_y(dy), x_size(sizex), y_size(sizey) {}
+rectangular_grid::rectangular_grid(double dx, double dy, size_t sizex, size_t sizey) : delta_x(dx), delta_y(dy), x_size(sizex), y_size(sizey) {}
 
-grid::grid(size_t sizex, size_t sizey) : x_size(sizex), y_size(sizey) {}
+rectangular_grid::rectangular_grid(size_t sizex, size_t sizey) : x_size(sizex), y_size(sizey) {}
 
-polygon grid::get_cell (const int i, const int j) const
+polygon rectangular_grid::get_cell (const int i, const int j) const
 {
   const point upper_left = {delta_x * i, delta_y * j};
   const point down_left  = {delta_x * i, delta_y * j};
@@ -58,7 +58,7 @@ polygon grid::get_cell (const int i, const int j) const
   return {upper_left, down_left, down_right, upper_right};
 }
 
-grid_edge grid::get_vertical_edge (const int i, const int j) const
+grid_edge rectangular_grid::get_vertical_edge (const int i, const int j) const
 {
   const double x_coord = i * delta_x;
   const double y_coord = (j - 1) * delta_y;
@@ -69,7 +69,7 @@ grid_edge grid::get_vertical_edge (const int i, const int j) const
   return {start, end};
 }
 
-grid_edge grid::get_horizontal_edge (const int i, const int j) const
+grid_edge rectangular_grid::get_horizontal_edge (const int i, const int j) const
 {
   const double x_coord = (i - 1) * delta_x;
   const double y_coord = j * delta_y;
@@ -80,7 +80,7 @@ grid_edge grid::get_horizontal_edge (const int i, const int j) const
   return {start, end};
 }
 
-grid& grid::operator=(const grid& other) {
+rectangular_grid& rectangular_grid::operator=(const rectangular_grid& other) {
     if (this != &other) {
         delta_x = other.delta_x;
         delta_y = other.delta_y;
@@ -90,7 +90,7 @@ grid& grid::operator=(const grid& other) {
     return *this;
 }
 
-bool operator==(const grid& lhs, const grid& rhs)
+bool operator==(const rectangular_grid& lhs, const rectangular_grid& rhs)
 {
     return std::fabs(lhs.delta_x - rhs.delta_x) < 1e-10
         && std::fabs(lhs.delta_y - rhs.delta_y) < 1e-10
@@ -195,7 +195,7 @@ double polygon::area () const
 // Параметры
 computation_params::computation_params() : velocity(), delta_t(0.0), grid_f() {}
 
-computation_params::computation_params(table_function vel, double dt, grid g)
+computation_params::computation_params(table_function vel, double dt, rectangular_grid g)
         : velocity(vel), delta_t(dt), grid_f(g) {}
 
 bool operator==(const computation_params& lhs, const computation_params& rhs)

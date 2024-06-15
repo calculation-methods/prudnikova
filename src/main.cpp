@@ -11,7 +11,7 @@ int main()
 {
     parameters params = read_parameters("/home/nastyapond/dplm/prudnikova/src/input.txt");
 
-    grid f_grid(params.delta_x, params.delta_y, params.f.points.size(), params.f.points[0].size());
+    rectangular_grid f_grid(params.delta_x, params.delta_y, params.f.points.size(), params.f.points[0].size());
 
     solver vof_method (params.u, params.v, f_grid, params.delta_t);
 

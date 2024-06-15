@@ -47,7 +47,7 @@ double compute_rho(const double etalon_value, const polygon &cell, const line_eq
 
 line_equation build_linear_approximation(const table_function &f, int i, int j)
 {
-    const grid &g = f.f_grid;
+    const rectangular_grid &g = f.f_grid;
     const double liquid_volume = f.points[i][j] * g.delta_x * g.delta_y;
     const point normal = compute_normal(f, i, j);
     const line_equation line (normal.x, normal.y, 0.);

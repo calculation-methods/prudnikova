@@ -38,7 +38,7 @@ BOOST_AUTO_TEST_CASE(PointLocationTest)
 
 BOOST_AUTO_TEST_CASE(EmptyGrid)
 {
-    grid emptyGrid;
+    rectangular_grid emptyGrid;
 
     line_segment line = {{0, 0}, 1.0};
 
@@ -50,7 +50,7 @@ BOOST_AUTO_TEST_CASE(EmptyGrid)
 
 BOOST_AUTO_TEST_CASE(LineIntersectsCell)
 {
-    grid grid(1.0, 1.0, 3, 3);
+    rectangular_grid grid(1.0, 1.0, 3, 3);
 
     line_segment line = {{0, 1}, 1};
 
@@ -78,7 +78,7 @@ BOOST_AUTO_TEST_CASE(form_polygon)
     point v4 = {0, 1};
     point v5 = {0, 0.5};
 
-    grid grid(1.0, 1.0, 3, 3);
+    rectangular_grid grid(1.0, 1.0, 3, 3);
 
     polygon result = PLIC::collect_polygon_vertices(line, grid, 0, 0);
     BOOST_TEST(result.vertex[0] == v1);

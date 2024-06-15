@@ -2,7 +2,7 @@
 
 double df_dx(const table_function &f, int i, int j)
 {
-    const grid &g = f.f_grid;
+    const rectangular_grid &g = f.f_grid;
 
     if (i < 0 || i >= f.points.size()) 
     {
@@ -22,7 +22,7 @@ double df_dx(const table_function &f, int i, int j)
     return (f.points[i + 1][j] - f.points[i - 1][j]) / (2.0 * g.delta_x);
 }
 
-double df_dy(const table_function& f, const grid& g, int i, int j) 
+double df_dy(const table_function& f, const rectangular_grid& g, int i, int j) 
 {
     if (i < 0 || i >= f.points.size()) 
     {
@@ -42,7 +42,7 @@ double df_dy(const table_function& f, const grid& g, int i, int j)
     }
 }
 
-table_function df_dx_plane(const table_function& f, const grid& g) 
+table_function df_dx_plane(const table_function& f, const rectangular_grid& g) 
 {
     table_function result;
     result.points.resize(f.points.size());
@@ -62,7 +62,7 @@ table_function df_dx_plane(const table_function& f, const grid& g)
     return result;
 }
 
-table_function df_dy_plane(const table_function& f, const grid& g) 
+table_function df_dy_plane(const table_function& f, const rectangular_grid& g) 
 {
     table_function result;
     result.points.resize(f.points.size());
@@ -83,7 +83,7 @@ table_function df_dy_plane(const table_function& f, const grid& g)
 }
 
 
-std::vector<table_function> nabla(const table_function& f, const grid& g) 
+std::vector<table_function> nabla(const table_function& f, const rectangular_grid& g) 
 {
     std::vector<table_function> result(2);
 
@@ -93,7 +93,7 @@ std::vector<table_function> nabla(const table_function& f, const grid& g)
     return result;
 }
 
-double divergence(const table_function& f, const grid& g, int i, int j) 
+double divergence(const table_function& f, const rectangular_grid& g, int i, int j) 
 {
     return df_dx(f, g, i, j) + df_dy(f, g, i, j);
 }

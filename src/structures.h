@@ -35,30 +35,30 @@ struct grid_edge
   orientation get_orientation() const;
 };
 
-struct grid {
+struct rectangular_grid {
     double delta_x;
     double delta_y;
 
     size_t x_size;
     size_t y_size;
 
-    grid();
+    rectangular_grid();
 
-    grid(double dx, double dy, size_t sizex, size_t sizey);
+    rectangular_grid(double dx, double dy, size_t sizex, size_t sizey);
 
-    grid(size_t sizex, size_t sizey);
+    rectangular_grid(size_t sizex, size_t sizey);
 
     polygon get_cell (const int i, const int j) const;
 
     grid_edge get_vertical_edge (const int i, const int j) const;
     grid_edge get_horizontal_edge (const int i, const int j) const;
 
-    grid& operator=(const grid& other);
+    rectangular_grid& operator=(const rectangular_grid& other);
 };
 
 struct table_function {
     std::vector<std::vector<double>> points;
-    grid f_grid;
+    rectangular_grid f_grid;
 
     // Конструктор по умолчанию (без параметров)
     table_function();
@@ -111,13 +111,13 @@ struct polygon {
 struct computation_params {
     table_function velocity;
     double delta_t; 
-    grid grid_f;
+    rectangular_grid grid_f;
 
     // Дефолтный конструктор
     computation_params();
 
     // Конструктор с параметрами
-    computation_params(table_function vel, double dt, grid grid_f);
+    computation_params(table_function vel, double dt, rectangular_grid grid_f);
 };
 
 
@@ -126,7 +126,7 @@ bool operator==(const table_function& lhs, const table_function& rhs);
 
 bool operator==(const line_segment& lhs, const line_segment& rhs);
 
-bool operator==(const grid& lhs, const grid& rhs);
+bool operator==(const rectangular_grid& lhs, const rectangular_grid& rhs);
 
 bool operator==(const polygon& lhs, const polygon& rhs);
 
