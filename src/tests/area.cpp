@@ -1,5 +1,4 @@
-#define BOOST_TEST_MODULE geometry_toolbox
-#include <boost/test/included/unit_test.hpp>
+#include <boost/test/unit_test.hpp>
 
 #include "../line_equation.h"
 
