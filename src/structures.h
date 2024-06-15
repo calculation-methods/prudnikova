@@ -71,13 +71,6 @@ struct table_function {
     double value (const int i, const int j) { return points[i][j]; }
 };
 
-struct line_segment {
-    point n;
-    double rho;
-
-    line_segment& operator=(const line_segment& other);
-};
-
 struct polygon {
     int vertex_num;
     std::vector<point> vertex;
