@@ -89,16 +89,16 @@
 // BOOST_AUTO_TEST_SUITE_END()
 
 BOOST_AUTO_TEST_SUITE(interface_cutting)
-//  y
-//  ^  
-//  |    p1 - p2 - p3
-//  |    |    |    |
-//  |    p4 - p5 - p6
-//  |    |    |    |
-//  |    p7 - p8 - p9  
-//  |
-//  0-------------------> x
-//
+//  
+// y ^  
+//   |    p1 - p2 - p3
+//   |    |    |    |
+//   |    p4 - p5 - p6
+//   |    |    |    |
+//   |    p7 - p8 - p9  
+//   |
+//   0-------------------> 
+//                      x
 BOOST_AUTO_TEST_CASE(cut_triangle)
 {
 	const point p1 (1, 3);
