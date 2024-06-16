@@ -17,7 +17,7 @@ include_directories(${Boost_INCLUDE_DIRS})
 # add_test(NAME ${POLYGON_AREA} COMMAND ${POLYGON_AREA})
 
 set(TEST unit_tests)
-add_executable(${TEST} slau.cpp area.cpp ../line_equation.cpp)
+add_executable(${TEST} slau.cpp area.cpp PLIC.cpp ../line_equation.cpp ../PLIC.cpp)
 target_link_libraries(${TEST} PUBLIC math_methods ${Boost_LIBRARIES})
 target_include_directories (${TEST} PUBLIC "${PROJECT_SOURCE_DIR}/math")
 add_test(NAME ${TEST} COMMAND ${TEST})

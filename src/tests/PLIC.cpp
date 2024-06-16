@@ -2,7 +2,7 @@
 #include <boost/test/included/unit_test.hpp>
 
 #include "../PLIC.h"
-#include "../structures.h"
+#include "../line_equation.h"
 
 // BOOST_AUTO_TEST_SUITE(PLICTests)
 
