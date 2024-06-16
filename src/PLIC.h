@@ -14,7 +14,7 @@ namespace PLIC
 
     std::optional<point> line_line_intersection(const line_equation &f1, const line_equation &f2);
     bool point_to_line_relation(const point &pnt, const line_equation &line_eq);
-    double cut_polygon_by_interface(const line_equation &interface, const polygon &plgn);
+    double liquid_area(const line_equation &interface, const polygon &plgn);
     double polygon_area(const polygon &plgn);
 
     point compute_normal(const table_function &f, int i, int j);

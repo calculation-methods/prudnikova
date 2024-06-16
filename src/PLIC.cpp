@@ -15,7 +15,7 @@ bool PLIC::point_to_line_relation(const point &pnt, const line_equation &line_eq
   return line_eq.substitute(pnt) >= 0.;
 }
 
-double PLIC::cut_polygon_by_interface(const line_equation &interface, const polygon &plgn)
+double PLIC::liquid_area(const line_equation &interface, const polygon &plgn)
 {
   std::vector<point> result;
 
@@ -54,7 +54,7 @@ double PLIC::compute_rho(const double etalon_value, const polygon &cell, const l
   for (const point &vertex : cell)
   {
     const double rho = slider_line.compute_distance (vertex);
-    const double vof = PLIC::cut_polygon_by_interface(line_equation (slider_line.a, slider_line.b, -rho), cell);
+    const double vof = PLIC::liquid_area(line_equation (slider_line.a, slider_line.b, -rho), cell);
     vof_vs_rho.emplace_back (vof, rho);
   }
 
@@ -70,7 +70,7 @@ double PLIC::compute_rho(const double etalon_value, const polygon &cell, const l
   while (std::abs(rho_max - rho_min) > eps) {
       const double rho_mean = mean_value(rho_min, rho_max);
       const line_equation new_line(slider_line.a, slider_line.b, -rho_mean);
-      const double new_vof = PLIC::cut_polygon_by_interface(new_line, cell);
+      const double new_vof = PLIC::liquid_area(new_line, cell);
       if (new_vof > etalon_value)
         rho_max = rho_mean;
       else
