@@ -114,19 +114,19 @@ BOOST_AUTO_TEST_CASE(cut_triangle)
   const polygon cell {p1, p7, p9, p3};
 
   const line_equation interface (p2, p4);
-  const double liquid_area = PLIC::liquid_area(interface, cell);
+  double liquid_area = PLIC::liquid_area(interface, cell);
   BOOST_TEST(liquid_area == 3.5);
 
   const line_equation interface_revert (p4, p2);
-  const double gas_area = PLIC::liquid_area(interface, cell);
+  double gas_area = PLIC::liquid_area(interface_revert, cell);
   BOOST_TEST(gas_area == 0.5);
 
-  const line_equation interface (p3, p7);
-  const double liquid_area = PLIC::liquid_area(interface, cell);
+  const line_equation interface_half_cell (p3, p7);
+  liquid_area = PLIC::liquid_area(interface_half_cell, cell);
   BOOST_TEST(liquid_area == 3.5);
 
-  const line_equation interface_revert (p7, p3);
-  const double gas_area = PLIC::liquid_area(interface, cell);
+  const line_equation interface_half_cell_revert (p7, p3);
+  gas_area = PLIC::liquid_area(interface_half_cell_revert, cell);
   BOOST_TEST(gas_area == 0.5);
 }
 
@@ -145,19 +145,19 @@ BOOST_AUTO_TEST_CASE(cut_trapezoid)
   const polygon cell {p1, p7, p9, p3};
 
   const line_equation interface (p4, p6);
-  const double liquid_area = PLIC::liquid_area(interface, cell);
+  double liquid_area = PLIC::liquid_area(interface, cell);
   BOOST_TEST(liquid_area == 2.);
 
   const line_equation interface_revert (p6, p4);
-  const double gas_area = PLIC::liquid_area(interface, cell);
+  double gas_area = PLIC::liquid_area(interface_revert, cell);
   BOOST_TEST(gas_area == 2.);
 
-  const line_equation interface (p4, p3);
-  const double liquid_area = PLIC::liquid_area(interface, cell);
+  const line_equation interface_half_cell (p4, p3);
+  liquid_area = PLIC::liquid_area(interface_half_cell, cell);
   BOOST_TEST(liquid_area == 2.);
 
-  const line_equation interface_revert (p3, p4);
-  const double gas_area = PLIC::liquid_area(interface, cell);
+  const line_equation interface_half_cell_revert (p3, p4);
+  gas_area = PLIC::liquid_area(interface_half_cell_revert, cell);
   BOOST_TEST(gas_area == 2.);
 }
 BOOST_AUTO_TEST_SUITE_END()
