@@ -7,8 +7,10 @@
 
 #include "grid.h"
 
+using vector_2d = std::vector<std::vector<double>>;
+
 struct table_function {
-    std::vector<std::vector<double>> points;
+    vector_2d points;
     rectangular_grid f_grid;
 
     // Конструктор по умолчанию (без параметров)

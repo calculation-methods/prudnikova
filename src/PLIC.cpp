@@ -43,16 +43,28 @@ double PLIC::polygon_area(const polygon &plgn)
   return plgn.area();
 }
 
-point PLIC::compute_normal(const table_function &f, int i, int j)
+point PLIC::compute_normal(const table_function &f, const int i, const int j)
 {
-  const double delta_x = f.f_grid.delta_x;
-  const double delta_y = f.f_grid.delta_y;
+  const vector_2d &cells = f.points;
+  const rectangular_grid &grid = f.f_grid;
 
-  point normal;
-  normal.x = 0.5 * (f.points[i + 1][j] - f.points[i - 1][j]) / delta_x;
-  normal.y = 0.5 * (f.points[i][j + 1] - f.points[i][j - 1]) / delta_y;
+  const int imax = grid.x_size;
+  const int jmax = grid.y_size;
 
-  return normal;
+  const int i_next = (i + 1) % imax;
+  const int i_prev = (i - 1) % imax;
+  const int j_next = (j + 1) % jmax;
+  const int j_prev = (j + 1) % jmax;
+
+  const double delta_x = grid.delta_x;
+  const double delta_y = grid.delta_y;
+
+  const double x = 0.5 * (cells[i_next][j] - cells[i_prev][j]) / delta_x;
+  const double y = 0.5 * (cells[i][j_next] - cells[i][j_prev]) / delta_y;
+
+  const point gradient_f (x, y);
+
+  return gradient_f;
 }
 
 double PLIC::compute_rho(const double etalon_value, const polygon &cell, const line_equation &slider_line)
