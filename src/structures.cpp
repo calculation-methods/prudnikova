@@ -39,7 +39,7 @@ bool operator==(const computation_params& lhs, const computation_params& rhs)
         && lhs.grid_f == rhs.grid_f;
 }
 
-point gradient (const int i, const int j) const
+point table_function::gradient (const int i, const int j) const
 {
   const vector_2d &cells = points;
   const rectangular_grid &grid = f_grid;
