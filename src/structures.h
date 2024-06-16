@@ -22,6 +22,8 @@ struct table_function {
     table_function& operator=(const table_function& other);
 
     double value (const int i, const int j) { return points[i][j]; }
+
+    point gradient (const int i, const int j) const;
 };
 
 struct computation_params {

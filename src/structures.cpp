@@ -39,3 +39,25 @@ bool operator==(const computation_params& lhs, const computation_params& rhs)
         && lhs.grid_f == rhs.grid_f;
 }
 
+point gradient (const int i, const int j) const
+{
+  const vector_2d &cells = points;
+  const rectangular_grid &grid = f_grid;
+
+  const int imax = grid.x_size;
+  const int jmax = grid.y_size;
+
+  const int i_next = (i + 1) % imax;
+  const int i_prev = (i - 1) % imax;
+  const int j_next = (j + 1) % jmax;
+  const int j_prev = (j + 1) % jmax;
+
+  const double delta_x = grid.delta_x;
+  const double delta_y = grid.delta_y;
+
+  const double x = 0.5 * (cells[i_next][j] - cells[i_prev][j]) / delta_x;
+  const double y = 0.5 * (cells[i][j_next] - cells[i][j_prev]) / delta_y;
+
+  return {x, y};
+}
+
