@@ -3,7 +3,6 @@
 
 #include "../PLIC.h"
 #include "../structures.h"
-#include "../linear.h"
 
 // BOOST_AUTO_TEST_SUITE(PLICTests)
 
@@ -102,62 +101,62 @@ BOOST_AUTO_TEST_SUITE(interface_cutting)
 //
 BOOST_AUTO_TEST_CASE(cut_triangle)
 {
-	constexpr point p1 = {1, 3};
-	constexpr point p2 = {2, 3};
-	constexpr point p3 = {3, 3};
-	constexpr point p4 = {1, 2};
-	constexpr point p5 = {2, 2};
-	constexpr point p6 = {3, 2};
-	constexpr point p7 = {1, 1};
-	constexpr point p8 = {2, 1};
-	constexpr point p9 = {3, 1};
+	const point p1 (1, 3);
+	const point p2 (2, 3);
+	const point p3 (3, 3);
+	const point p4 (1, 2);
+	const point p5 (2, 2);
+	const point p6 (3, 2);
+	const point p7 (1, 1);
+	const point p8 (2, 1);
+	const point p9 (3, 1);
 
-  constexpr polygon cell {p1, p7, p9, p3};
+  const polygon cell {p1, p7, p9, p3};
 
-  constexpr line_equation interface (p2, p4);
-  constexpr double liquid_area = PLIC::liquid_area(interface, cell);
+  const line_equation interface (p2, p4);
+  const double liquid_area = PLIC::liquid_area(interface, cell);
   BOOST_TEST(liquid_area == 3.5);
 
-  constexpr line_equation interface_revert (p4, p2);
-  constexpr double gas_area = PLIC::liquid_area(interface, cell);
+  const line_equation interface_revert (p4, p2);
+  const double gas_area = PLIC::liquid_area(interface, cell);
   BOOST_TEST(gas_area == 0.5);
 
-  constexpr line_equation interface (p3, p7);
-  constexpr double liquid_area = PLIC::liquid_area(interface, cell);
+  const line_equation interface (p3, p7);
+  const double liquid_area = PLIC::liquid_area(interface, cell);
   BOOST_TEST(liquid_area == 3.5);
 
-  constexpr line_equation interface_revert (p7, p3);
+  const line_equation interface_revert (p7, p3);
   const double gas_area = PLIC::liquid_area(interface, cell);
   BOOST_TEST(gas_area == 0.5);
 }
 
 BOOST_AUTO_TEST_CASE(cut_trapezoid)
 {
-	constexpr point p1 = {1, 3};
-	constexpr point p2 = {2, 3};
-	constexpr point p3 = {3, 3};
-	constexpr point p4 = {1, 2};
-	constexpr point p5 = {2, 2};
-	constexpr point p6 = {3, 2};
-	constexpr point p7 = {1, 1};
-	constexpr point p8 = {2, 1};
-	constexpr point p9 = {3, 1};
+	const point p1 (1, 3);
+	const point p2 (2, 3);
+	const point p3 (3, 3);
+	const point p4 (1, 2);
+	const point p5 (2, 2);
+	const point p6 (3, 2);
+	const point p7 (1, 1);
+	const point p8 (2, 1);
+	const point p9 (3, 1);
 
-  constexpr polygon cell {p1, p7, p9, p3};
+  const polygon cell {p1, p7, p9, p3};
 
-  constexpr line_equation interface (p4, p6);
-  constexpr double liquid_area = PLIC::liquid_area(interface, cell);
+  const line_equation interface (p4, p6);
+  const double liquid_area = PLIC::liquid_area(interface, cell);
   BOOST_TEST(liquid_area == 2.);
 
-  constexpr line_equation interface_revert (p6, p4);
-  constexpr double gas_area = PLIC::liquid_area(interface, cell);
+  const line_equation interface_revert (p6, p4);
+  const double gas_area = PLIC::liquid_area(interface, cell);
   BOOST_TEST(gas_area == 2.);
 
-  constexpr line_equation interface (p4, p3);
-  constexpr double liquid_area = PLIC::liquid_area(interface, cell);
+  const line_equation interface (p4, p3);
+  const double liquid_area = PLIC::liquid_area(interface, cell);
   BOOST_TEST(liquid_area == 2.);
 
-  constexpr line_equation interface_revert (p3, p4);
+  const line_equation interface_revert (p3, p4);
   const double gas_area = PLIC::liquid_area(interface, cell);
   BOOST_TEST(gas_area == 2.);
 }
