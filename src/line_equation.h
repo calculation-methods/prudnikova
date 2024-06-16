@@ -3,6 +3,7 @@
 
 #include <optional>
 #include <vector>
+#include <ostream>
 
 struct point {
     double x;
