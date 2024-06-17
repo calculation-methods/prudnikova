@@ -88,30 +88,23 @@
 // BOOST_AUTO_TEST_SUITE_END()
 
 BOOST_AUTO_TEST_SUITE(interface_cutting)
-//  
-// y ^  
-//   |    p1 - p2 - p3
-//   |    |    |    |
-//   |    p4 - p5 - p6
-//   |    |    |    |
-//   |    p7 - p8 - p9  
-//   |
-//   0-------------------> 
-//                      x
-BOOST_AUTO_TEST_CASE(cut_triangle)
+struct points_environment
 {
-	const point p1 (1, 3);
-	const point p2 (2, 3);
-	const point p3 (3, 3);
-	const point p4 (1, 2);
-	const point p5 (2, 2);
-	const point p6 (3, 2);
-	const point p7 (1, 1);
-	const point p8 (2, 1);
-	const point p9 (3, 1);
+	const point p1 {1, 3};               // y ^  
+	const point p2 {2, 3};               //   |    p1 - p2 - p3
+	const point p3 {3, 3};               //   |    |    |    |
+	const point p4 {1, 2};               //   |    p4 - p5 - p6
+	const point p5 {2, 2};               //   |    |    |    |
+	const point p6 {3, 2};               //   |    p7 - p8 - p9  
+	const point p7 {1, 1};               //   |
+	const point p8 {2, 1};               //   0-------------------> 
+	const point p9 {3, 1};               //                      x
 
-  const polygon cell {p1, p7, p9, p3};
+  const polygon cell {p1, p7, p9, p3}; // counterclockwise
+};
 
+BOOST_FIXTURE_TEST_CASE(cut_triangle, points_environment)
+{
   const line_equation interface (p2, p4);
   double liquid_area = PLIC::liquid_area(interface, cell);
   BOOST_TEST(liquid_area == 3.5);
@@ -129,20 +122,8 @@ BOOST_AUTO_TEST_CASE(cut_triangle)
   BOOST_TEST(gas_area == 0.5);
 }
 
-BOOST_AUTO_TEST_CASE(cut_trapezoid)
+BOOST_FIXTURE_TEST_CASE(cut_trapezoid, points_environment)
 {
-	const point p1 (1, 3);
-	const point p2 (2, 3);
-	const point p3 (3, 3);
-	const point p4 (1, 2);
-	const point p5 (2, 2);
-	const point p6 (3, 2);
-	const point p7 (1, 1);
-	const point p8 (2, 1);
-	const point p9 (3, 1);
-
-  const polygon cell {p1, p7, p9, p3};
-
   const line_equation interface (p4, p6);
   double liquid_area = PLIC::liquid_area(interface, cell);
   BOOST_TEST(liquid_area == 2.);
