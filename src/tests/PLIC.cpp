@@ -1,5 +1,4 @@
-#define BOOST_TEST_MODULE geometry_toolbox
-#include <boost/test/included/unit_test.hpp>
+#include <boost/test/unit_test.hpp>
 
 #include "../PLIC.h"
 #include "../line_equation.h"
@@ -160,4 +159,5 @@ BOOST_AUTO_TEST_CASE(cut_trapezoid)
   gas_area = PLIC::liquid_area(interface_half_cell_revert, cell);
   BOOST_TEST(gas_area == 2.);
 }
+
 BOOST_AUTO_TEST_SUITE_END()
