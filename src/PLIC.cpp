@@ -12,14 +12,14 @@ std::optional<point> PLIC::line_line_intersection(const line_equation &line_eq1,
 
 bool PLIC::point_to_line_relation(const point &pnt, const line_equation &line_eq)
 {
-  return line_eq.substitute(pnt) >= -epsilon;
+  return line_eq.substitute(pnt) <= epsilon;
 }
 
 double PLIC::liquid_area(const line_equation &interface, const polygon &plgn)
 {
   std::vector<point> result;
 
-  auto is_liquid_point = [&interface] (const point &pnt) { return !PLIC::point_to_line_relation(pnt, interface); };
+  auto is_liquid_point = [&interface] (const point &pnt) { return PLIC::point_to_line_relation(pnt, interface); };
 
   const size_t size = plgn.size ();
   for (size_t i = 0; i < size; ++i)

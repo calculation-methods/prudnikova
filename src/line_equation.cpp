@@ -43,8 +43,8 @@ double line_equation::substitute (const point &p) const
 
 std::optional<point> line_equation::cross (const line_equation &other) const
 {
-  const matrix_extended extended_system_matrix = {{{{ this->a, this->b, this->c}},
-                                                   {{ other.a, other.b, other.c}}}};
+  const matrix_extended extended_system_matrix = {{{{ this->a, this->b, -this->c}},
+                                                   {{ other.a, other.b, -other.c}}}};
   const slau system_of_equations(extended_system_matrix);
   const column solution = system_of_equations.solve();
 

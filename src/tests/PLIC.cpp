@@ -66,11 +66,11 @@ BOOST_FIXTURE_TEST_CASE(cut_trapezoid, points_environment)
 
   const line_equation interface_half_cell (p4, p3);
   liquid_area = PLIC::liquid_area(interface_half_cell, cell);
-  BOOST_TEST(liquid_area == 3.);
+  BOOST_TEST(liquid_area == 1.);
 
   const line_equation interface_half_cell_revert (p3, p4);
   gas_area = PLIC::liquid_area(interface_half_cell_revert, cell);
-  BOOST_TEST(gas_area == 1.);
+  BOOST_TEST(gas_area == 3.);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
