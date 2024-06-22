@@ -5,21 +5,6 @@
 
 // BOOST_AUTO_TEST_SUITE(PLICTests)
 
-BOOST_AUTO_TEST_CASE(LineLineIntersectionTest)
-{
-  const point p1 (0., 0.); 
-  const point p2 (1., 1.); 
-  const point p3 (0., 1.); 
-  const point p4 (1., 0.); 
-  const line_equation line (p1, p2);
-  
-  BOOST_TEST(PLIC::point_to_line_relation(p1, line) == true);
-  BOOST_TEST(PLIC::point_to_line_relation(p2, line) == true);
-  BOOST_TEST(PLIC::point_to_line_relation(p3, line) == true);
-  BOOST_TEST(PLIC::point_to_line_relation(p4, line) == false);
-}
-
-BOOST_AUTO_TEST_SUITE(interface_cutting)
 struct points_environment
 {
   const point p1 {1, 3};               //  y ^
@@ -34,6 +19,18 @@ struct points_environment
 
   const polygon cell {p1, p7, p9, p3}; // counterclockwise
 };
+
+BOOST_FIXTURE_TEST_CASE(LineLineIntersectionTest, points_environment)
+{
+  const line_equation line (p3, p7);
+  
+  BOOST_TEST(PLIC::point_to_line_relation(p3, line) == true);
+  BOOST_TEST(PLIC::point_to_line_relation(p7, line) == true);
+  BOOST_TEST(PLIC::point_to_line_relation(p9, line) == true);
+  BOOST_TEST(PLIC::point_to_line_relation(p1, line) == false);
+}
+
+BOOST_AUTO_TEST_SUITE(interface_cutting)
 
 BOOST_FIXTURE_TEST_CASE(cut_triangle, points_environment)
 {
